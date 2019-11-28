@@ -1,14 +1,12 @@
 <script>
 	import { Router, Route, link } from "svelte-routing";
-	import Signin from "./components/Signin";
-	import Home from "./components/Home";
+	import Signin from "./components/Signin.svelte";
+	import Home from "./components/Home.svelte";
 
-	export let name;
 </script>
 
 <Router>
 	<h1>Svetle routing example</h1>
-	<Nav>The amazing nav</Nav>
 	<a href="/login">Login</a>
 <hr>
 	<div>
