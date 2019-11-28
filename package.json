@@ -1,0 +1,25 @@
+{
+  "name": "svelte-netlify-identity",
+  "version": "1.0.0",
+  "description": "Because the netlify id widget doesn't provide change password and update email functionality in the UI.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "prettier-plugin-svelte": "^0.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuantumInformation/svelte-netlify-identity.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/QuantumInformation/svelte-netlify-identity/issues"
+  },
+  "homepage": "https://github.com/QuantumInformation/svelte-netlify-identity#readme"
+}
