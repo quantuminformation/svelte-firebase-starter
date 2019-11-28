@@ -1,11 +1,22 @@
 <script>
+	import { Router, Route, link } from "svelte-routing";
+	import Signin from "./components/Signin";
+	import Home from "./components/Home";
+
 	export let name;
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<Router>
+	<h1>Svetle routing example</h1>
+	<Nav>The amazing nav</Nav>
+	<a href="/login">Login</a>
+<hr>
+	<div>
+		<Route path="signin" component="{Signin}"/>
+		<Route path="/" component="{Home}"/>
+	</div>
+</Router>
+
 
 <style>
 	main {

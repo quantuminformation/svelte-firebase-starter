@@ -4,7 +4,8 @@
   "description": "Because the netlify id widget doesn't provide change password and update email functionality in the UI.",
   "main": "index.js",
   "dependencies": {
-    "gotrue-js": "^0.9.25"
+    "gotrue-js": "^0.9.25",
+    "svelte-routing": "^1.4.0"
   },
   "devDependencies": {
     "prettier": "^1.19.1",
