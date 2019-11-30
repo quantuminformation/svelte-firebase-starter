@@ -6,9 +6,11 @@
 </script>
 
 <Router>
-    <h1>Svetle routing example</h1>
-    <a href="/login">Login</a>
+    <h1>Svetle auth example</h1>
+    <a href="/" use:link>Home</a>
+    <a href="/signin" use:link>Signin</a>
     <hr>
+
     <div>
         <Route path="signin" component="{Signin}"/>
         <Route path="/" component="{Home}"/>
