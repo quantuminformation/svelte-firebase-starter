@@ -2,13 +2,18 @@
     import { Router, Route, link } from "svelte-routing";
     import Signin from "./components/Signin.svelte";
     import Home from "./components/Home.svelte";
+    import { authUser } from './userStore';
+
+
 
 </script>
 
 <Router>
     <h1>Svetle auth example</h1>
+    <p>Logged in as {authUser.toString()}</p>
     <a href="/" use:link>Home</a>
     <a href="/signin" use:link>Signin</a>
+    <button on:click >Logout</button>
     <hr>
 
     <div>
