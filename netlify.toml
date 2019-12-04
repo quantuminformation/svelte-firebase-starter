@@ -1,0 +1,3 @@
+[build]
+  command = "cd examples/example-svelte-routing && npm run build"
+  publish = "public"

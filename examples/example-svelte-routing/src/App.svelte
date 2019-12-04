@@ -1,22 +1,35 @@
 <script>
     import { Router, Route, link } from "svelte-routing";
+    import Register from "./components/Register.svelte";
     import Signin from "./components/Signin.svelte";
     import Home from "./components/Home.svelte";
-    import { authUser } from './userStore';
+    import { authUserStore, confirm } from './userStore';
 
+    // check for user confirmation token
+    var hash = window.location.hash.substr(1);
 
+    var result = hash.split('&').reduce(function (result, item) {
+        var parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+    }, {});
+    if (result.confirmation_token) {
+        confirm(result.confirmation_token)
+    }
 
 </script>
 
 <Router>
     <h1>Svetle auth example</h1>
-    <p>Logged in as {authUser.toString()}</p>
+    <p>Logged in as {authUserStore.toString()}</p>
     <a href="/" use:link>Home</a>
+    <a href="/register" use:link>Register</a>
     <a href="/signin" use:link>Signin</a>
-    <button on:click >Logout</button>
+    <button on:click>Logout</button>
     <hr>
 
     <div>
+        <Route path="register" component="{Register}"/>
         <Route path="signin" component="{Signin}"/>
         <Route path="/" component="{Home}"/>
     </div>

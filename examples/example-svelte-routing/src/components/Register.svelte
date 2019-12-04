@@ -1,22 +1,16 @@
 <script>
-    import GoTrue, { User, Settings } from 'gotrue-js';
-    import { authUser } from '../userStore';
+    import { register, authUserStore, PENDING_VERIFICATION } from "../userStore";
 
-    let password= ""
-    let email=""
-    const url = 'http://mentorcv.com/'
-    const goTrueInstance =
-            new GoTrue({
-                APIUrl: `${url}/.netlify/identity`,
-                setCookie: true,
-            })
-    const user = goTrueInstance.currentUser() || undefined
+    let password = ""
+    let email = ""
 
 
 </script>
 <h1>Register</h1>
-<form>
-    <input placeholder="email" bind:value={authUser.email}>
-    <input placeholder="password" type="password" bind:value={authUser.email}>
-    <button on:click={register()}></button>
-</form>
+<input placeholder="email" bind:value={email}>
+<input placeholder="password" type="password" bind:value={password}>
+<button on:click={()=>register(email,password)}>Register</button>
+
+{#if $authUserStore === PENDING_VERIFICATION}
+    <h2>Please check your email to verify and then login</h2>
+{/if}

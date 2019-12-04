@@ -1,5 +1,9 @@
 <script>
-    import GoTrue, { User, Settings } from 'gotrue-js';
+    import GoTrue from 'gotrue-js';
+    import { authUserStore, signin } from "../userStore";
+
+    let password = ""
+    let email = ""
 
     const url = 'http://mentorcv.com/'
     const goTrueInstance =
@@ -7,12 +11,10 @@
                 APIUrl: `${url}/.netlify/identity`,
                 setCookie: true,
             })
-    const user = goTrueInstance.currentUser() || undefined
 
 </script>
+<h1>Signin</h1>
 
-<form>
-    <input placeholder="email">
-    <input placeholder="password" type="password">
-    <button></button>
-</form>
+<input placeholder="email">
+<input placeholder="password" type="password">
+<button on:click={()=>signin(email,password,true)}>Signin</button>
