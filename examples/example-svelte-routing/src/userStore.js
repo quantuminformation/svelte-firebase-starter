@@ -17,7 +17,7 @@ export function logout () {
 }
 
 export function signin (email, password, remember) {
-    goTrueInstance.login(email, password, remember).then(user => authUserStore.update(user)).catch(e=>{
+    goTrueInstance.login(email, password, remember).then(user => authUserStore.update(user)).catch((e) => {
         alert(e.message)
     });
 }
