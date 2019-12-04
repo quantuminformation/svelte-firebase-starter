@@ -13,11 +13,22 @@ const user = goTrueInstance.currentUser() || undefined
 export const authUserStore = writable(user);
 
 export function logout () {
-    user.logout().then(() => authUserStore.update(undefined));
+    user.logout().then(() => {
+        console.log(authUserStore)
+        authUserStore.update((user) => undefined)
+        window.location.assign("/");
+
+    }).catch((e) => {
+        alert(e.message)
+    });
 }
 
 export function signin (email, password, remember) {
-    goTrueInstance.login(email, password, remember).then(user => authUserStore.update(user)).catch((e) => {
+    goTrueInstance.login(email, password, remember).then(user => {
+        authUserStore.update(() => user)
+        window.location.assign("/");
+
+    }).catch((e) => {
         alert(e.message)
     });
 }

@@ -22,14 +22,17 @@
 <Router>
     <h1>Svetle auth example</h1>
     {#if $authUserStore}
-    <p>Logged in as {$authUserStore.toString()}</p>
-    <button on:click={logout}>Logout</button>
+        <p>Logged in as {$authUserStore.email}</p>
+        <button on:click={logout}>Logout</button>
     {:else}
         <p>Not logged in</p>
     {/if}
     <a href="/" use:link>Home</a>
-    <a href="/register" use:link>Register</a>
-    <a href="/signin" use:link>Signin</a>
+    {#if !$authUserStore}
+
+        <a href="/register" use:link>Register</a>
+        <a href="/signin" use:link>Signin</a>
+    {/if}
     <hr>
 
     <div>

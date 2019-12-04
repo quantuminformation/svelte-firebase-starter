@@ -2,8 +2,8 @@
     import GoTrue from 'gotrue-js';
     import { authUserStore, signin } from "../userStore";
 
-    let password = ""
-    let email = ""
+    let password = "123"
+    let email = "nkatsikanis@gmail.com"
 
     const url = 'http://mentorcv.com/'
     const goTrueInstance =
