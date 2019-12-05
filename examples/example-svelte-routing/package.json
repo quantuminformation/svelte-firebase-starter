@@ -16,8 +16,9 @@
     "svelte": "^3.16.0"
   },
   "dependencies": {
+    "gotrue-js": "^0.9.25",
     "sirv-cli": "^0.4.5",
     "svelte-routing": "^1.4.0",
-    "gotrue-js": "^0.9.25"
+    "svelte-spinner": "^2.0.2"
   }
 }
