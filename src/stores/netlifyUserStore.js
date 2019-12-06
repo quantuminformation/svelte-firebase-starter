@@ -53,10 +53,7 @@ export function updateUserSettings (name) {
                 alert(e.message)
                 reject()
             });
-
         });
-
-
 }
 
 export function register (email, password) {

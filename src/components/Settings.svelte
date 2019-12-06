@@ -46,9 +46,10 @@
     <h2>You have successfully updated your settings</h2>
 {:else if pendingUpdateUserCustomSettings}
     <Spinner></Spinner>
-{/if}-->
+{/if}
 
 <hr>
+-->
 <h2>Security</h2>
 <input placeholder="email" bind:value={clonedUser.email}>
 <input placeholder="password" type="password" bind:value={clonedUser.password}>

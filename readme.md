@@ -4,8 +4,7 @@ An SPA example for people to quickly start churning out fullstack apps in Svelte
 
 # Videos!
 Best way to get up to speed is to watch these videos: 
-<a href=https://www.youtube.com/watch?v=76tkAx2NVcw&list=PLCrwuqjmVebJeMDrAPQDrJmnwXWDw3CJW&index=
-" target="_blank"><img src="http://img.youtube.com/vi/76tkAx2NVcw/0.jpg" 
+<a href="https://www.youtube.com/watch?v=76tkAx2NVcw&list=PLCrwuqjmVebJeMDrAPQDrJmnwXWDw3CJW" target="_blank"><img src="http://img.youtube.com/vi/76tkAx2NVcw/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 
