@@ -26,11 +26,37 @@ export function logout () {
 export function signin (email, password, remember) {
     goTrueInstance.login(email, password, remember).then(user => {
         authUserStore.update(() => user)
+        console.log(`logged in as ${authUserStore}`)
         window.location.assign("/");
 
     }).catch((e) => {
         alert(e.message)
     });
+}
+
+export function updateUserSecuritySettings (email, password) {
+    user.update({ email: email, password: password}).then(user => {
+        authUserStore.update(() => user)
+    }).catch((e) => {
+        alert(e.message)
+    });
+}
+
+export function updateUserSettings (name) {
+    return new Promise(
+        function (resolve, reject) {
+
+            user.update().then(user => {
+                authUserStore.update(() => user)
+                resolve()
+            }).catch((e) => {
+                alert(e.message)
+                reject()
+            });
+
+        });
+
+
 }
 
 export function register (email, password) {
