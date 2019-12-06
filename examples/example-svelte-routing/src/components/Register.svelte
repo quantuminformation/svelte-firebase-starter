@@ -5,15 +5,15 @@
     let password = ""
     let email = ""
     let pendingVerification = false
-    let pendingRegistration = false
+    let pendingApiCall = false
 
     export function registerHandler (email, password) {
-        pendingRegistration = true
+        pendingApiCall = true
         register(email, password).then(newUser => {
             pendingVerification = true
-            pendingRegistration = false
+            pendingApiCall = false
         }).catch(e => {
-            pendingRegistration = false
+            pendingApiCall = false
             console.log(e)
             alert(e.message)
         });
@@ -27,6 +27,6 @@
 
 {#if pendingVerification}
     <h2>Please check your email to verify and then login</h2>
-{:else if pendingRegistration}
+{:else if pendingApiCall}
     <Spinner></Spinner>
 {/if}
