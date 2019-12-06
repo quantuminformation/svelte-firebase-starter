@@ -4,10 +4,6 @@
 # dependencies
 node_modules
 
-/src/*.js
-/src/*.d.ts
-/src/*.map
-
 # builds
 build
 dist
