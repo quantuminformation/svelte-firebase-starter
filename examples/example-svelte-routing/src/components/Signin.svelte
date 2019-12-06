@@ -1,5 +1,5 @@
 <script>
-    import { signin } from "../userStore";
+    import { signin } from "../stores/netlifyUserStore";
 
     let password = ""
     let email = ""

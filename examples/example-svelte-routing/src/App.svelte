@@ -4,7 +4,7 @@
     import Signin from "./components/Signin.svelte";
     import Settings from "./components/Settings.svelte";
     import Home from "./components/Home.svelte";
-    import { authUserStore, confirm, logout } from './userStore';
+    import { authUserStore, confirm, logout } from './stores/netlifyUserStore';
 
     console.log($authUserStore)
     // check for user confirmation token

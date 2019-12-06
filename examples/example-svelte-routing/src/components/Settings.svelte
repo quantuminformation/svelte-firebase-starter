@@ -1,5 +1,5 @@
 <script>
-    import { updateUserSecuritySettings, authUserStore, updateUserSettings } from "../userStore";
+    import { updateUserSecuritySettings, authUserStore, updateUserSettings } from "../stores/netlifyUserStore";
     import Spinner from 'svelte-spinner';
     import { navigate } from "svelte-routing";
 

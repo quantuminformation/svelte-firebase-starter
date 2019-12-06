@@ -1,5 +1,5 @@
 <script>
-    import { register, authUserStore, PENDING_VERIFICATION } from "../userStore";
+    import { register, authUserStore, PENDING_VERIFICATION } from "../stores/netlifyUserStore";
     import Spinner from 'svelte-spinner';
 
     let password = ""
