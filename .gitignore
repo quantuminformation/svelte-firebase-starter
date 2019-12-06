@@ -14,3 +14,7 @@ dist
 
 .netlify
 .idea
+
+
+.DS_Store
+public/build

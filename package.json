@@ -1,26 +1,35 @@
 {
-  "name": "svelte-netlify-identity",
+  "name": "svelte-app",
   "version": "1.0.0",
-  "description": "Because the netlify id widget doesn't provide change password and update email functionality in the UI.",
-  "main": "index.js",
-  "dependencies": {
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "sirv public --single"
   },
   "devDependencies": {
+    "rollup": "^1.27.8",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-livereload": "^1.0.4",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-svelte": "^5.1.1",
+    "rollup-plugin-terser": "^5.1.2",
+    "svelte": "^3.16.0",
     "prettier": "^1.19.1",
     "prettier-plugin-svelte": "^0.7.0"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dependencies": {
+    "gotrue-js": "^0.9.25",
+    "sirv-cli": "^0.4.5",
+    "svelte-routing": "^1.4.0",
+    "svelte-spinner": "^2.0.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/QuantumInformation/svelte-netlify-identity.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/QuantumInformation/svelte-netlify-identity/issues"
-  },
-  "homepage": "https://github.com/QuantumInformation/svelte-netlify-identity#readme"
+  "keywords": [
+    "svelte",
+    "sveltejs",
+    "fullstack"
+  ]
 }

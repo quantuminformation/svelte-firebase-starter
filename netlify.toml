@@ -1,6 +1,6 @@
 [build]
-  command = "cd examples/example-svelte-routing && npm i && npm run build"
-  publish = "examples/example-svelte-routing/public"
+  command = "npm run build"
+  publish = "public"
 
   [[redirects]]
     from = "/*"
