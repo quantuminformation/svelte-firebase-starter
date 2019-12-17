@@ -58,6 +58,10 @@ export function register (email, password) {
     return goTrueInstance.signup(email, password)
 }
 
+export function requestPasswordRecovery (email) {
+    return goTrueInstance.requestPasswordRecovery(email)
+}
+
 export function confirm (token) {
     goTrueInstance.confirm(token)
         .then(function (response) {

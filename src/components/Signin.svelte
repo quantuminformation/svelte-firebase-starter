@@ -2,7 +2,7 @@
 
     import { signin } from "../stores/userStore";
     import DefaultSpinner from '../components/DefaultSpinner.svelte'
-    import { navigate } from "svelte-routing";
+    import { navigate,link } from "svelte-routing";
     import { authUserStore } from '../stores/userStore';
 
     if ($authUserStore) {
@@ -40,7 +40,7 @@
                 <DefaultSpinner></DefaultSpinner>
             {/if}
         </form>
-
+<p>Forgot password? Click <a use:link href="/reset">Here to reset it.</a> </p>
 
     </div>
 </div>

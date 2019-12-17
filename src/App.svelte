@@ -1,6 +1,7 @@
 <script>
     import { Router, Route, link } from "svelte-routing";
     import Register from "./components/Register.svelte";
+    import Reset from "./components/Reset.svelte";
     import Signin from "./components/Signin.svelte";
     import Settings from "./components/Settings.svelte";
     import Home from "./components/Home.svelte";
@@ -41,6 +42,7 @@
 
     <div>
         <Route path="register" component="{Register}"/>
+        <Route path="reset" component="{Reset}"/>
         <Route path="signin" component="{Signin}"/>
         <Route path="settings" component="{Settings}"/>
         <Route path="/" component="{Home}"/>
