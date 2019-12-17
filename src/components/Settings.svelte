@@ -25,23 +25,26 @@
         });
     }
 
-    /*    export function handlerCustomData (name) {
-            pendingApiCall = true
-            (email, password).then(newUser => {
-                pendingVerification = true
-                pendingApiCall = false
-            }).catch(e => {
-                pendingApiCall = false
-                console.log(e)
-                alert(e.message)
-            });
-        }*/
+    export function handlerCustomData (name) {
+        pendingUpdateUserCustomSettings = true
+        updateUserSettings({name:name}).then(newUser => {
+            successUpdateUserCustomSettings = true
+            pendingUpdateUserCustomSettings = false
+        }).catch(e => {
+            pendingUpdateUserCustomSettings = false
+            console.log(e)
+            alert(e.message)
+        });
+    }
 
 </script>
-<!--<h1>Your custom settings</h1>
+<h1>Your custom settings</h1>
 
 <input placeholder="name" bind:value={$authUserStore.name}>
 <button on:click={()=>handlerCustomData($authUserStore.email,$authUserStore.password)}>Update Settings</button>
+<div>
+    <input type="checkbox" placeholder="lala">
+</div>
 {#if successUpdateUserCustomSettings}
     <h2>You have successfully updated your settings</h2>
 {:else if pendingUpdateUserCustomSettings}
@@ -49,7 +52,7 @@
 {/if}
 
 <hr>
--->
+
 <h2>Security</h2>
 <input placeholder="email" bind:value={clonedUser.email}>
 <input placeholder="password" type="password" bind:value={clonedUser.password}>
