@@ -12,7 +12,9 @@ alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 # inspiration for netlify stuff
 https://github.com/sw-yx/react-netlify-identity
 
-# Netlify deployment
+# Netlify demo
+This uses the Gotrue-js lib which hooks in with Netlify's user auth system (called Identity)
+https://svelte-netlify-identity.netlify.com
 
 # svelte app
 

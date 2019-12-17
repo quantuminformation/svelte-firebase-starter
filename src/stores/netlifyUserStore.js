@@ -29,6 +29,7 @@ export function updateUserSecuritySettings (email, password) {
         function (resolve, reject) {
 
             user.update({ email: email, password: password }).then(user => {
+                console.log(user)
 
                 authUserStore.update(() => user)
                 resolve()

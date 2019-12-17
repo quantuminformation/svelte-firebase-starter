@@ -3,7 +3,7 @@
 
     import DefaultSpinner from '../components/DefaultSpinner.svelte'
     import { navigate } from "svelte-routing";
-    import { authUserStore, updateUserSecuritySettings } from '../stores/netlifyUserStore';
+    import { authUserStore, updateUserSecuritySettings } from '../stores/userStore';
 
 
     if (!$authUserStore) {

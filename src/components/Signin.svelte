@@ -1,9 +1,9 @@
 <script>
 
-    import { signin } from "../stores/netlifyUserStore";
+    import { signin } from "../stores/userStore";
     import DefaultSpinner from '../components/DefaultSpinner.svelte'
     import { navigate } from "svelte-routing";
-    import { authUserStore } from '../stores/netlifyUserStore';
+    import { authUserStore } from '../stores/userStore';
 
     if ($authUserStore) {
         navigate("/", { replace: true });
