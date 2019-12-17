@@ -1,7 +1,9 @@
 import { writable } from 'svelte/store';
 import GoTrue from 'gotrue-js';
+import { navigate } from "svelte-routing";
 
-const url = 'https://svelte-netlify-identity.netlify.com'
+
+const url = 'https://mentorcv.com'
 const goTrueInstance =
     new GoTrue({
         APIUrl: `${url}/.netlify/identity`,
@@ -16,44 +18,39 @@ export function logout () {
     user.logout().then(() => {
         console.log(authUserStore)
         authUserStore.update((user) => undefined)
-        window.location.assign("/");
-
-    }).catch((e) => {
-        alert(e.message)
-    });
-}
-
-export function signin (email, password, remember) {
-    goTrueInstance.login(email, password, remember).then(user => {
-        authUserStore.update(() => user)
-        console.log(`logged in as ${authUserStore}`)
-        window.location.assign("/");
-
+        navigate("/", { replace: true });
     }).catch((e) => {
         alert(e.message)
     });
 }
 
 export function updateUserSecuritySettings (email, password) {
-    user.update({ email: email, password: password}).then(user => {
-        authUserStore.update(() => user)
-    }).catch((e) => {
-        alert(e.message)
-    });
-}
-
-export function updateUserSettings (name) {
     return new Promise(
         function (resolve, reject) {
 
-            user.update().then(user => {
+            user.update({ email: email, password: password }).then(user => {
+
                 authUserStore.update(() => user)
                 resolve()
             }).catch((e) => {
                 alert(e.message)
                 reject()
             });
-        });
+        })
+}
+
+export function signin (email, password) {
+    return new Promise(
+        function (resolve, reject) {
+            goTrueInstance.login(email, password, true).then(user => {
+                authUserStore.update(() => user)
+                window.location.assign("/");
+
+            }).catch((e) => {
+                alert(e.message)
+                reject()
+            });
+        })
 }
 
 export function register (email, password) {

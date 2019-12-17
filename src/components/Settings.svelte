@@ -1,65 +1,53 @@
 <script>
-    import { updateUserSecuritySettings, authUserStore, updateUserSettings } from "../stores/netlifyUserStore";
-    import Spinner from 'svelte-spinner';
+
+
+    import DefaultSpinner from '../components/DefaultSpinner.svelte'
     import { navigate } from "svelte-routing";
+    import { authUserStore, updateUserSecuritySettings } from '../stores/netlifyUserStore';
+
 
     if (!$authUserStore) {
         navigate("/", { replace: true });
     }
-    const clonedUser = Object.assign({}, $authUserStore);
-    let pendingUpdateUserSettings = false
-    let successUpdateUserSettings = false
 
-    let successUpdateUserCustomSettings = false
-    let pendingUpdateUserCustomSettings = false
+    let password = ""
+    let email = $authUserStore.email
+    let showSuccessMessage1 = false
+    let pendingApiCall1 = false
 
-    console.log($authUserStore)
-
-    export function handlerSecurity (email, password) {
-        pendingUpdateUserSettings = true
+    export function submit1 (event) {
+        pendingApiCall1 = true
         updateUserSecuritySettings(email, password).then(newUser => {
-            successUpdateUserSettings = true
-            pendingUpdateUserSettings = false
+            showSuccessMessage1 = true
+            pendingApiCall1 = false
         }).catch(e => {
-            pendingUpdateUserSettings = false
-        });
-    }
-
-    export function handlerCustomData (name) {
-        pendingUpdateUserCustomSettings = true
-        updateUserSettings({name:name}).then(newUser => {
-            successUpdateUserCustomSettings = true
-            pendingUpdateUserCustomSettings = false
-        }).catch(e => {
-            pendingUpdateUserCustomSettings = false
+            pendingApiCall1 = false
             console.log(e)
             alert(e.message)
         });
     }
 
 </script>
-<h1>Your custom settings</h1>
 
-<input placeholder="name" bind:value={$authUserStore.name}>
-<button on:click={()=>handlerCustomData($authUserStore.email,$authUserStore.password)}>Update Settings</button>
+
 <div>
-    <input type="checkbox" placeholder="lala">
+    <h1>Security Settings</h1>
+    <form on:submit|preventDefault={submit1}>
+        <input
+                id="inline-full-name" type="email" required placeholder="Email" bind:value="{email}">
+        <input
+                id="inline-username" type="password" required placeholder="Your password" bind:value="{password}">
+
+
+        <button
+        >Update Security Settings
+        </button>
+        {#if pendingApiCall1}
+            <DefaultSpinner></DefaultSpinner>
+        {/if}
+    </form>
+    {#if showSuccessMessage1}
+        <p>Your Security Settings have been updated.</p>
+    {/if}
+
 </div>
-{#if successUpdateUserCustomSettings}
-    <h2>You have successfully updated your settings</h2>
-{:else if pendingUpdateUserCustomSettings}
-    <Spinner></Spinner>
-{/if}
-
-<hr>
-
-<h2>Security</h2>
-<input placeholder="email" bind:value={clonedUser.email}>
-<input placeholder="password" type="password" bind:value={clonedUser.password}>
-<button on:click={()=>handlerSecurity(clonedUser.email,clonedUser.password)}>Update Security Settings</button>
-
-{#if successUpdateUserSettings}
-    <h2>You have successfully updated your settings</h2>
-{:else if pendingUpdateUserSettings}
-    <Spinner></Spinner>
-{/if}

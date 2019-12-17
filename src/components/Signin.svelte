@@ -1,11 +1,46 @@
 <script>
+
     import { signin } from "../stores/netlifyUserStore";
+    import DefaultSpinner from '../components/DefaultSpinner.svelte'
+    import { navigate } from "svelte-routing";
+    import { authUserStore } from '../stores/netlifyUserStore';
+
+    if ($authUserStore) {
+        navigate("/", { replace: true });
+    }
 
     let password = ""
     let email = ""
-</script>
-<h1>Signin</h1>
+    let pendingApiCall = false
 
-<input placeholder="email" bind:value={email}>
-<input placeholder="password" type="password" bind:value={password}>
-<button on:click={()=>signin(email,password,true)}>Signin</button>
+    export function submit (event) {
+        pendingApiCall = true
+        signin(email, password).catch(e => {
+            pendingApiCall = false
+        });
+    }
+</script>
+
+
+<div>
+
+    <div>
+        <h1>Login Details</h1>
+        <form on:submit|preventDefault={submit} id="main-form">
+
+            <input
+                    id="inline-full-name" type="email" required placeholder="Email" bind:value="{email}">
+            <input
+                    id="inline-username" type="password" required placeholder="Your password" bind:value="{password}">
+
+            <button
+            >Signin
+            </button>
+            {#if pendingApiCall}
+                <DefaultSpinner></DefaultSpinner>
+            {/if}
+        </form>
+
+
+    </div>
+</div>
