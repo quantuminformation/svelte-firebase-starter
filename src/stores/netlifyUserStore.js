@@ -3,7 +3,7 @@ import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
 
 
-const url = 'https://mentorcv.com'
+const url = 'https://svelte-netlify-identity.netlify.com/'
 const goTrueInstance =
     new GoTrue({
         APIUrl: `${url}/.netlify/identity`,
@@ -66,6 +66,17 @@ export function confirm (token) {
     goTrueInstance.confirm(token)
         .then(function (response) {
             alert("Account confirmed! Welcome to the party! You can now login with your details", JSON.stringify({ response }));
+        })
+        .catch(function (e) {
+            alert(e.message);
+        });
+}
+
+
+export function recover (token) {
+    goTrueInstance.recover(token)
+        .then(function (response) {
+            alert("Account recovered!", JSON.stringify({ response }));
         })
         .catch(function (e) {
             alert(e.message);
