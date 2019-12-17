@@ -1,16 +1,23 @@
 <script>
+
     import { register } from "../stores/netlifyUserStore";
-    import Spinner from 'svelte-spinner';
+    import DefaultSpinner from './DefaultSpinner.svelte'
+    import { navigate } from "svelte-routing";
+
+    if ($authUserStore) {
+        navigate("/", { replace: true });
+    }
 
     let password = ""
     let email = ""
-    let pendingVerification = false
+    let showSuccessMessage = false
     let pendingApiCall = false
 
-    export function registerHandler (email, password) {
+
+    export function submit (event) {
         pendingApiCall = true
         register(email, password).then(newUser => {
-            pendingVerification = true
+            showSuccessMessage = true
             pendingApiCall = false
         }).catch(e => {
             pendingApiCall = false
@@ -20,13 +27,25 @@
     }
 
 </script>
-<h1>Register</h1>
-<input placeholder="email" bind:value={email}>
-<input placeholder="password" type="password" bind:value={password}>
-<button on:click={()=>registerHandler(email,password)}>Register</button>
 
-{#if pendingVerification}
-    <h2>Please check your email to verify and then login</h2>
-{:else if pendingApiCall}
-    <Spinner></Spinner>
-{/if}
+
+<div>
+
+    <div>
+        <h1>Register</h1>
+        <form on:submit|preventDefault={submit}>
+            <input type="email" required placeholder="Email" bind:value="{email}">
+            <input type="password" required placeholder="Your password" bind:value="{password}">
+
+            <button>Register
+            </button>
+            {#if pendingApiCall}
+                <DefaultSpinner></DefaultSpinner>
+            {/if}
+        </form>
+        {#if showSuccessMessage}
+            <p>Please check your email to verify and then login</p>
+        {/if}
+
+    </div>
+</div>
