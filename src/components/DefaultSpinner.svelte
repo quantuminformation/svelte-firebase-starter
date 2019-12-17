@@ -9,6 +9,6 @@
 </style>
 <Spinner  size="50"
          speed="750"
-         color="#d5f3ff"
+         color="blue"
          thickness="2"
          gap="40"></Spinner>
