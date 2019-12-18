@@ -24,20 +24,15 @@ export function logout () {
     });
 }
 
-export function updateUserSecuritySettings (email, password) {
-    return new Promise(
-        function (resolve, reject) {
+export async function updateUserSecuritySettings (email, password) {
+    try {
+        const user = await user.update({ email: email, password: password })
+        console.log(user)
 
-            user.update({ email: email, password: password }).then(user => {
-                console.log(user)
-
-                authUserStore.update(() => user)
-                resolve()
-            }).catch((e) => {
-                alert(e.message)
-                reject()
-            });
-        })
+        authUserStore.update(() => user)
+    } catch (e) {
+        alert(e.message)
+    }
 }
 
 export function signin (email, password) {
@@ -75,8 +70,10 @@ export function confirm (token) {
 
 export function recover (token) {
     goTrueInstance.recover(token)
-        .then(function (response) {
-            alert("Account recovered!", JSON.stringify({ response }));
+        .then(function (user) {
+            alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
+            authUserStore.update(() => user)
+            window.location.assign("/settings");
         })
         .catch(function (e) {
             alert(e.message);

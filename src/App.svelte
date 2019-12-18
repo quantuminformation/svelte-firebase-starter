@@ -1,11 +1,11 @@
 <script>
     import { Router, Route, link } from "svelte-routing";
     import Register from "./components/Register.svelte";
-    import Reset from "./components/Reset.svelte";
+    import Recover from "./components/Recover.svelte";
     import Signin from "./components/Signin.svelte";
     import Settings from "./components/Settings.svelte";
     import Home from "./components/Home.svelte";
-    import { authUserStore, confirm, logout } from './stores/userStore';
+    import { authUserStore, confirm, logout ,recover} from './stores/userStore';
 
     console.log($authUserStore)
     // check for user confirmation token
@@ -17,6 +17,8 @@
     }, {});
     if (result.confirmation_token) {
         confirm(result.confirmation_token)
+    }else if (result.recovery_token) {
+        recover(result.recovery_token)
     }
 
 </script>
@@ -42,7 +44,7 @@
 
     <div>
         <Route path="register" component="{Register}"/>
-        <Route path="reset" component="{Reset}"/>
+        <Route path="recover" component="{Recover}"/>
         <Route path="signin" component="{Signin}"/>
         <Route path="settings" component="{Settings}"/>
         <Route path="/" component="{Home}"/>

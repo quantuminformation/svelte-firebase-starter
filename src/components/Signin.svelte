@@ -40,7 +40,7 @@
                 <DefaultSpinner></DefaultSpinner>
             {/if}
         </form>
-<p>Forgot password? Click <a use:link href="/reset">Here to reset it.</a> </p>
+<p>Forgot password? Click <a use:link href="/recover">Here to reset it.</a> </p>
 
     </div>
 </div>
