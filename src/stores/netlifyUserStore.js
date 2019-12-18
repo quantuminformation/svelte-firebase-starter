@@ -10,12 +10,12 @@ const goTrueInstance =
         setCookie: true,
     })
 
-const user = goTrueInstance.currentUser() || undefined
+const goTrueUser = goTrueInstance.currentUser() || undefined
 
-export const authUserStore = writable(user);
+export const authUserStore = writable(goTrueUser);
 
 export function logout () {
-    user.logout().then(() => {
+    goTrueUser.logout().then(() => {
         console.log(authUserStore)
         authUserStore.update((user) => undefined)
         navigate("/", { replace: true });
@@ -26,7 +26,7 @@ export function logout () {
 
 export async function updateUserSecuritySettings (email, password) {
     try {
-        const updatedUser = await user.update({ email: email, password: password })
+        const updatedUser = await goTrueUser.update({ email: email, password: password })
         console.log(updatedUser)
 
         authUserStore.update(() => updatedUser)
@@ -34,6 +34,18 @@ export async function updateUserSecuritySettings (email, password) {
         alert(e.message)
     }
 }
+
+export async function updateUserCustomSettings (fullname) {
+    try {
+        const updatedUser = await goTrueUser.update({ data: { fullname: fullname } })
+        console.log(updatedUser)
+
+        authUserStore.update(() => updatedUser)
+    } catch (e) {
+        alert(e.message)
+    }
+}
+
 
 export async function signin (email, password) {
     try {
@@ -68,7 +80,7 @@ export function confirm (token) {
 
 export async function recover (token) {
     try {
-        let existingUser = goTrueInstance.recover(token)
+        let existingUser = await goTrueInstance.recover(token)
 
         alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
         authUserStore.update(() => existingUser)

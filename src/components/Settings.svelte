@@ -3,7 +3,7 @@
 
     import DefaultSpinner from '../components/DefaultSpinner.svelte'
     import { navigate } from "svelte-routing";
-    import { authUserStore, updateUserSecuritySettings } from '../stores/userStore';
+    import { authUserStore, updateUserSecuritySettings, updateUserCustomSettings } from '../stores/userStore';
 
 
     if (!$authUserStore) {
@@ -13,10 +13,15 @@
     let password = ""
     let confirmPassword = ""
     let email = $authUserStore.email
+
+    let fullname = $authUserStore.user_metadata.fullname
+
     let showSuccessMessage1 = false
     let pendingApiCall1 = false
+    let showSuccessMessage2 = false
+    let pendingApiCall2 = false
 
-    export function submit1 (event) {
+    function submit1 (event) {
         if (password === confirmPassword) {
             pendingApiCall1 = true
             updateUserSecuritySettings(email, password).then(newUser => {
@@ -27,10 +32,28 @@
                 console.log(e)
                 alert(e.message)
             });
-        }
-        else{
+        } else {
             alert('Your passwords do not match')
         }
+    }
+
+    function submit2 (event) {
+        /*
+                if (password === confirmPassword) {
+        */
+        pendingApiCall2 = true
+        updateUserCustomSettings(fullname).then(newUser => {
+            showSuccessMessage2 = true
+            pendingApiCall2 = false
+        }).catch(e => {
+            pendingApiCall2 = false
+            console.log(e)
+            alert(e.message)
+        });
+        /*   }
+           else{
+               alert('Your passwords do not match')
+           }*/
     }
 
 </script>
@@ -55,5 +78,23 @@
     {#if showSuccessMessage1}
         <p>Your Security Settings have been updated.</p>
     {/if}
+
+    <hr>
+
+    <h1>Custom Settings</h1>
+    <form on:submit|preventDefault={submit2}>
+        <input
+                required placeholder="Fullname" bind:value="{fullname}"><br>
+
+        <br>
+        <button>Update Custom Settings</button>
+        {#if pendingApiCall2}
+            <DefaultSpinner></DefaultSpinner>
+        {/if}
+    </form>
+    {#if showSuccessMessage2}
+        <p>Your Custom Settings have been updated.</p>
+    {/if}
+
 
 </div>
