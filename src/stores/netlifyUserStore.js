@@ -35,18 +35,16 @@ export async function updateUserSecuritySettings (email, password) {
     }
 }
 
-export function signin (email, password) {
-    return new Promise(
-        function (resolve, reject) {
-            goTrueInstance.login(email, password, true).then(user => {
-                authUserStore.update(() => user)
-                window.location.assign("/");
-
-            }).catch((e) => {
-                alert(e.message)
-                reject()
-            });
+export async function signin (email, password) {
+    try {
+        await goTrueInstance.login(email, password, true).then(user => {
+            authUserStore.update(() => user)
+            window.location.assign("/");
         })
+    } catch (e) {
+        alert(e.message)
+        throw e.message
+    }
 }
 
 export function register (email, password) {
