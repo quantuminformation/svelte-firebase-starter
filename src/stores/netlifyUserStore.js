@@ -26,10 +26,10 @@ export function logout () {
 
 export async function updateUserSecuritySettings (email, password) {
     try {
-        const user = await user.update({ email: email, password: password })
-        console.log(user)
+        const updatedUser = await user.update({ email: email, password: password })
+        console.log(updatedUser)
 
-        authUserStore.update(() => user)
+        authUserStore.update(() => updatedUser)
     } catch (e) {
         alert(e.message)
     }
@@ -68,14 +68,15 @@ export function confirm (token) {
 }
 
 
-export function recover (token) {
-    goTrueInstance.recover(token)
-        .then(function (user) {
-            alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
-            authUserStore.update(() => user)
-            window.location.assign("/settings");
-        })
-        .catch(function (e) {
-            alert(e.message);
-        });
+export async function recover (token) {
+    try {
+        let existingUser = goTrueInstance.recover(token)
+
+        alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
+        authUserStore.update(() => existingUser)
+        window.location.assign("/settings");
+    } catch (e) {
+        alert(e.message);
+    }
+
 }
