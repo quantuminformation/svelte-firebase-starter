@@ -17,6 +17,7 @@
     if (result.confirmation_token) {
         confirm(result.confirmation_token)
     }else if (result.recovery_token) {
+        debugger
         console.log('recovering account')
         recover(result.recovery_token)
     }
