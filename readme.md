@@ -14,7 +14,7 @@ https://github.com/sw-yx/react-netlify-identity
 
 # Netlify demo
 This uses the Gotrue-js lib which hooks in with Netlify's user auth system (called Identity)
-https://svelte-netlify-identity.netlify.com
+[Demo](https://svelte-netlify-identity.netlify.com)
 
 # svelte app
 

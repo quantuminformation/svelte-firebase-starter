@@ -80,12 +80,15 @@ export function confirm (token) {
 
 export async function recover (token) {
     try {
+
         let existingUser = await goTrueInstance.recover(token)
 
         alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
+        console.log(`recovered account: ${existingUser}`)
         authUserStore.update(() => existingUser)
         window.location.assign("/settings");
     } catch (e) {
+        console.log('something wrong with recovery')
         alert(e.message);
     }
 

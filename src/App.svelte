@@ -8,7 +8,6 @@
     import { authUserStore, confirm, logout ,recover} from './stores/userStore';
 
     console.log($authUserStore)
-    // check for user confirmation token
     var hash = window.location.hash.substr(1);
     var result = hash.split('&').reduce(function (result, item) {
         var parts = item.split('=');
@@ -18,13 +17,14 @@
     if (result.confirmation_token) {
         confirm(result.confirmation_token)
     }else if (result.recovery_token) {
+        console.log('recovering account')
         recover(result.recovery_token)
     }
 
 </script>
 
 <Router>
-    <h1>Svetle auth example</h1>
+    <h1>Svetle Fullstack Starter</h1>
     {#if $authUserStore}
         <p>Logged in as {$authUserStore.email}</p>
     {:else}
