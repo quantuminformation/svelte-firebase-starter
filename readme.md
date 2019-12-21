@@ -1,6 +1,7 @@
 # Why
 
-An SPA example for people to quickly start churning out fullstack apps in Svelte
+An SPA example for people to quickly start churning out fullstack apps in Svelte with various backends. In order to reduce clutter I have tried to group related
+backend files in there own folders as much as possble, however some files live at the root as it just makes things easier with the cli for eg netlify and firebase.
 
 # Videos!
 Best way to get up to speed is to watch these videos: 
@@ -15,6 +16,9 @@ https://github.com/sw-yx/react-netlify-identity
 # Netlify demo
 This uses the Gotrue-js lib which hooks in with Netlify's user auth system (called Identity)
 [Demo](https://svelte-netlify-identity.netlify.com)
+
+# firebase stuff WIP
+two files live at the root .firebaserc and firebase.json and some others are grouped in /firebase_specific to try an keep things tidy
 
 # svelte app
 

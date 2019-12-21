@@ -1,10 +1,10 @@
 {
   "database": {
-    "rules": "database.rules.json"
+    "rules": "./firebase_specific/database.rules.json"
   },
   "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
+    "rules": "./firebase_specific/firestore.rules",
+    "indexes": "./firebase_specific/firestore.indexes.json"
   },
   "functions": {
     "predeploy": [
@@ -27,7 +27,7 @@
     ]
   },
   "storage": {
-    "rules": "storage.rules"
+    "rules": "./firebase_specific/storage.rules"
   },
   "emulators": {
     "functions": {
