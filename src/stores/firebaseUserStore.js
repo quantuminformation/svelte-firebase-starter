@@ -2,6 +2,8 @@ import { writable } from 'svelte/store';
 import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
 
+import {auth} from "firebase";
+
 
 const url = 'https://svelte-netlify-identity.netlify.com/'
 const goTrueInstance =
@@ -61,6 +63,14 @@ export async function signin (email, password) {
 
 export function register (email, password) {
     return goTrueInstance.signup(email, password)
+
+    auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+    });
+
+
 }
 
 export function requestPasswordRecovery (email) {
