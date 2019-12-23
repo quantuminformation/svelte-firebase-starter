@@ -2,8 +2,11 @@ import { writable } from 'svelte/store';
 import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
 
-import * as firebase from "firebase/app";
+import * as firebas2e from "firebase/app";
+let firebase = firebas2e.default
 import "firebase/auth";
+//import "firebase/analytics";
+
 
 //import firebase from "firebase";
 
@@ -18,8 +21,9 @@ var firebaseConfig = {
     measurementId: "G-Y1SRV3FGND"
 };
 // Initialize Firebase
+//firebase.initializeApp(firebaseConfig);
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+//firebase.default.analytics();
 
 const url = 'https://svelte-netlify-identity.netlify.com/'
 const goTrueInstance =
@@ -78,15 +82,7 @@ export async function signin (email, password) {
 }
 
 export function register (email, password) {
-    return goTrueInstance.signup(email, password)
-
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-    });
-
-
+    return firebase.auth().createUserWithEmailAndPassword(email, password)
 }
 
 export function requestPasswordRecovery (email) {
