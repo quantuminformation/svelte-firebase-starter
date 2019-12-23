@@ -22,8 +22,6 @@
             pendingApiCall = false
         }).catch(e => {
             pendingApiCall = false
-            console.log(e)
-            alert(e.message)
         });
     }
 

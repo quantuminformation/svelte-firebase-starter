@@ -18,7 +18,9 @@ This uses the Gotrue-js lib which hooks in with Netlify's user auth system (call
 [Demo](https://svelte-netlify-identity.netlify.com)
 
 # firebase stuff WIP
-two files live at the root .firebaserc and firebase.json and some others are grouped in /firebase_specific to try an keep things tidy
+Two files live at the root .firebaserc and firebase.json and some others are grouped in /firebase_specific to try an keep things tidy
+[Demo](https://svelte-fullstack-starter.firebaseapp.com/)
+
 
 # svelte app
 

@@ -5,22 +5,9 @@
     import Signin from "./components/Signin.svelte";
     import Settings from "./components/Settings.svelte";
     import Home from "./components/Home.svelte";
-    import { authUserStore, confirm, logout ,recover} from './stores/userStore';
+    import { authUserStore, logout } from './stores/userStore';
 
     console.log($authUserStore)
-    var hash = window.location.hash.substr(1);
-    var result = hash.split('&').reduce(function (result, item) {
-        var parts = item.split('=');
-        result[parts[0]] = parts[1];
-        return result;
-    }, {});
-    if (result.confirmation_token) {
-        confirm(result.confirmation_token)
-    }else if (result.recovery_token) {
-        debugger
-        console.log('recovering account')
-        recover(result.recovery_token)
-    }
 
 </script>
 
@@ -32,24 +19,24 @@
         <p>Not logged in</p>
     {/if}
     <div>
-    <a href="/" use:link>Home</a>
-    {#if !$authUserStore}
+        <a href="/" use:link>Home</a>
+        {#if !$authUserStore}
 
-        <a href="/register" use:link>Register</a>
-        <a href="/signin" use:link>Signin</a>
-    {:else}
-        <a href="/settings" use:link>Settings</a>
-        <button on:click={logout}>Logout</button>
-    {/if}
-    <hr>
+            <a href="/register" use:link>Register</a>
+            <a href="/signin" use:link>Signin</a>
+        {:else}
+            <a href="/settings" use:link>Settings</a>
+            <button on:click={logout}>Logout</button>
+        {/if}
+        <hr>
 
-    <div>
-        <Route path="register" component="{Register}"/>
-        <Route path="recover" component="{Recover}"/>
-        <Route path="signin" component="{Signin}"/>
-        <Route path="settings" component="{Settings}"/>
-        <Route path="/" component="{Home}"/>
-    </div>
+        <div>
+            <Route path="register" component="{Register}"/>
+            <Route path="recover" component="{Recover}"/>
+            <Route path="signin" component="{Signin}"/>
+            <Route path="settings" component="{Settings}"/>
+            <Route path="/" component="{Home}"/>
+        </div>
 </Router>
 
 

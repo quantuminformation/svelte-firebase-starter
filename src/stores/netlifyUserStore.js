@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
+import { userFromNetlify } from '../model/User'
 
 
 const url = 'https://svelte-netlify-identity.netlify.com/'
@@ -50,7 +51,7 @@ export async function updateUserCustomSettings (fullname) {
 export async function signin (email, password) {
     try {
         await goTrueInstance.login(email, password, true).then(user => {
-            authUserStore.update(() => user)
+            authUserStore.update(() => userFromNetlify(user))
             window.location.assign("/");
         })
     } catch (e) {
@@ -92,4 +93,20 @@ export async function recover (token) {
         alert(e.message);
     }
 
+}
+
+// custom logic for registration
+
+var hash = window.location.hash.substr(1);
+var result = hash.split('&').reduce(function (result, item) {
+    var parts = item.split('=');
+    result[parts[0]] = parts[1];
+    return result;
+}, {});
+if (result.confirmation_token) {
+    confirm(result.confirmation_token)
+} else if (result.recovery_token) {
+    debugger
+    console.log('recovering account')
+    recover(result.recovery_token)
 }

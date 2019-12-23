@@ -14,7 +14,7 @@
     let confirmPassword = ""
     let email = $authUserStore.email
 
-    let fullname = $authUserStore.user_metadata.fullname
+    let fullname = $authUserStore.fullname
 
     let showSuccessMessage1 = false
     let pendingApiCall1 = false

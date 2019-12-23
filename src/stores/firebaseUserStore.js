@@ -2,9 +2,11 @@ import { writable } from 'svelte/store';
 import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
 
-import * as firebas2e from "firebase/app";
-let firebase = firebas2e.default
+import * as firebaseOriginal from "firebase/app";
+
+let firebase = firebaseOriginal.default
 import "firebase/auth";
+import { userFromFireBase } from '../model/User'
 //import "firebase/analytics";
 
 
@@ -32,9 +34,11 @@ const goTrueInstance =
         setCookie: true,
     })
 
-const goTrueUser = goTrueInstance.currentUser() || undefined
+const user = firebase.auth().currentUser()
 
 export const authUserStore = writable(goTrueUser);
+
+//todo
 
 export function logout () {
     goTrueUser.logout().then(() => {
@@ -45,6 +49,8 @@ export function logout () {
         alert(e.message)
     });
 }
+
+//todo
 
 export async function updateUserSecuritySettings (email, password) {
     try {
@@ -57,6 +63,7 @@ export async function updateUserSecuritySettings (email, password) {
     }
 }
 
+//todo
 export async function updateUserCustomSettings (fullname) {
     try {
         const updatedUser = await goTrueUser.update({ data: { fullname: fullname } })
@@ -71,9 +78,18 @@ export async function updateUserCustomSettings (fullname) {
 
 export async function signin (email, password) {
     try {
-        await goTrueInstance.login(email, password, true).then(user => {
-            authUserStore.update(() => user)
-            window.location.assign("/");
+        await firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
+
+            if (user.user.emailVerified) {
+
+                authUserStore.update(() => userFromFireBase(user))
+                navigate("/", { replace: true });
+
+            } else {
+                alert('User not found, if you registered before, have you checked your email?')
+                throw new Error() // no message needed for the UI to stop the spinner
+            }
+            console.log(user)
         })
     } catch (e) {
         alert(e.message)
@@ -81,24 +97,23 @@ export async function signin (email, password) {
     }
 }
 
-export function register (email, password) {
-    return firebase.auth().createUserWithEmailAndPassword(email, password)
+export async function register (email, password) {
+    try {
+        let newUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        console.log('registered ' + newUser)
+    } catch (e) {
+        alert(e.message)
+        throw e.message
+    }
+
 }
 
+//todo
 export function requestPasswordRecovery (email) {
     return goTrueInstance.requestPasswordRecovery(email)
 }
 
-export function confirm (token) {
-    goTrueInstance.confirm(token)
-        .then(function (response) {
-            alert("Account confirmed! Welcome to the party! You can now login with your details", JSON.stringify({ response }));
-        })
-        .catch(function (e) {
-            alert(e.message);
-        });
-}
-
+//todo
 
 export async function recover (token) {
     try {
