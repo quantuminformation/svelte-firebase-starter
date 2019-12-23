@@ -2,8 +2,24 @@ import { writable } from 'svelte/store';
 import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
 
-import {auth} from "firebase";
+import * as firebase from "firebase/app";
+import "firebase/auth";
 
+//import firebase from "firebase";
+
+var firebaseConfig = {
+    apiKey: "AIzaSyDgkLmjsLTLO8cnEhaZu-0o12wpdisCn5w",
+    authDomain: "svelte-fullstack-starter.firebaseapp.com",
+    databaseURL: "https://svelte-fullstack-starter.firebaseio.com",
+    projectId: "svelte-fullstack-starter",
+    storageBucket: "svelte-fullstack-starter.appspot.com",
+    messagingSenderId: "684795141693",
+    appId: "1:684795141693:web:bb22a3283361cfc381d454",
+    measurementId: "G-Y1SRV3FGND"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 const url = 'https://svelte-netlify-identity.netlify.com/'
 const goTrueInstance =
@@ -64,7 +80,7 @@ export async function signin (email, password) {
 export function register (email, password) {
     return goTrueInstance.signup(email, password)
 
-    auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
