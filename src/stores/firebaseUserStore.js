@@ -27,16 +27,10 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 //firebase.default.analytics();
 
-const url = 'https://svelte-netlify-identity.netlify.com/'
-const goTrueInstance =
-    new GoTrue({
-        APIUrl: `${url}/.netlify/identity`,
-        setCookie: true,
-    })
+//const user = firebase.auth().currentUser()
 
-const user = firebase.auth().currentUser()
-
-export const authUserStore = writable(goTrueUser);
+//todo check user
+export const authUserStore = writable(null);
 
 //todo
 
@@ -100,6 +94,7 @@ export async function signin (email, password) {
 export async function register (email, password) {
     try {
         let newUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        newUser.user.sendEmailVerification()
         console.log('registered ' + newUser)
     } catch (e) {
         alert(e.message)
