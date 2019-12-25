@@ -25,17 +25,38 @@ var firebaseConfig = {
 // Initialize Firebase
 //firebase.initializeApp(firebaseConfig);
 firebase.initializeApp(firebaseConfig);
-//firebase.default.analytics();
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
-//const user = firebase.auth().currentUser()
+// firebase specific
+let userLoaded = false;
 
-//todo check user
-export const authUserStore = writable(null);
+function getCurrentUser () {
+    return new Promise((resolve, reject) => {
+        if (userLoaded) {
+            resolve(firebase.auth().currentUser);
+        }
+        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            userLoaded = true;
+            unsubscribe();
+            resolve(user);
+        }, reject);
+    });
+}
+
+export let authUserStore = writable(null);
+
+async function init () {
+    let user = await getCurrentUser()
+    user && authUserStore.update(store => userFromFireBase(user));
+}
+
+init()
 
 //todo
+export async function logout () {
 
-export function logout () {
-    goTrueUser.logout().then(() => {
+    // let user = await getCurrentUser()
+    firebase.auth().signOut().then(() => {
         console.log(authUserStore)
         authUserStore.update((user) => undefined)
         navigate("/", { replace: true });
@@ -72,19 +93,17 @@ export async function updateUserCustomSettings (fullname) {
 
 export async function signin (email, password) {
     try {
-        await firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
+        let {user} = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
+        if (user.emailVerified) {
 
-            if (user.user.emailVerified) {
+            authUserStore.update(() => userFromFireBase(user))
+            navigate("/", { replace: true });
 
-                authUserStore.update(() => userFromFireBase(user))
-                navigate("/", { replace: true });
-
-            } else {
-                alert('User not found, if you registered before, have you checked your email?')
-                throw new Error() // no message needed for the UI to stop the spinner
-            }
-            console.log(user)
-        })
+        } else {
+            alert('User not found, if you registered before, have you checked your email?')
+            throw new Error() // no message needed for the UI to stop the spinner
+        }
+        console.log(user)
     } catch (e) {
         alert(e.message)
         throw e.message
@@ -103,25 +122,7 @@ export async function register (email, password) {
 
 }
 
-//todo
 export function requestPasswordRecovery (email) {
-    return goTrueInstance.requestPasswordRecovery(email)
+    return firebase.auth().sendPasswordResetEmail(email)
 }
 
-//todo
-
-export async function recover (token) {
-    try {
-
-        let existingUser = await goTrueInstance.recover(token)
-
-        alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
-        console.log(`recovered account: ${existingUser}`)
-        authUserStore.update(() => existingUser)
-        window.location.assign("/settings");
-    } catch (e) {
-        console.log('something wrong with recovery')
-        alert(e.message);
-    }
-
-}

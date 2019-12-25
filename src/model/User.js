@@ -1,7 +1,7 @@
 // todo temping to switch to TS
 
 export function userFromFireBase (serverUser) {
-    return getUser(serverUser.user.email)
+    return getUser(serverUser.email)
 }
 
 export function userFromNetlify (serverUser) {
