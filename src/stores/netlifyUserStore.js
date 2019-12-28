@@ -110,3 +110,4 @@ if (result.confirmation_token) {
     console.log('recovering account')
     recover(result.recovery_token)
 }
+

@@ -3,25 +3,40 @@
 
     import DefaultSpinner from '../components/DefaultSpinner.svelte'
     import { navigate } from "svelte-routing";
-    import { authUserStore, updateUserSecuritySettings, updateUserCustomSettings } from '../stores/userStore';
+    import {  updateUserEmail, updateUserPassword, updateUserCustomSettings } from '../stores/userStore';
+    import Authenticated from './Authenticated.svelte'
 
+    export let authUser
 
-    if (!$authUserStore) {
-        navigate("/", { replace: true });
-    }
-
+    let email = authUser.email
     let password = ""
     let confirmPassword = ""
-    let email = $authUserStore.email
-
-    let fullname = $authUserStore.fullname
 
     let showSuccessMessage1 = false
     let pendingApiCall1 = false
     let showSuccessMessage2 = false
     let pendingApiCall2 = false
+    let showSuccessMessage3 = false
+    let pendingApiCall3 = false
 
     function submit1 (event) {
+
+        if (authUser.email !== email) {
+            pendingApiCall1 = true
+            updateUserEmail(email).then(newUser => {
+                showSuccessMessage1 = true
+                pendingApiCall1 = false
+            }).catch(e => {
+                pendingApiCall1 = false
+                console.log(e)
+                alert(e.message)
+            });
+        } else {
+            alert('Your Email is the same as it was before, operation ignored,')
+        }
+    }
+
+    function submit2 (event) {
         if (password === confirmPassword) {
             pendingApiCall1 = true
             updateUserSecuritySettings(email, password).then(newUser => {
@@ -37,16 +52,16 @@
         }
     }
 
-    function submit2 (event) {
+    function submit3 (event) {
         /*
                 if (password === confirmPassword) {
         */
-        pendingApiCall2 = true
-        updateUserCustomSettings(fullname).then(newUser => {
-            showSuccessMessage2 = true
-            pendingApiCall2 = false
+        pendingApiCall3 = true
+        updateUserCustomSettings(authUser.fullname).then(newUser => {
+            showSuccessMessage3 = true
+            pendingApiCall3 = false
         }).catch(e => {
-            pendingApiCall2 = false
+            pendingApiCall3 = false
             console.log(e)
             alert(e.message)
         });
@@ -58,43 +73,54 @@
 
 </script>
 
+<Authenticated let:authUser>
 
-<div>
-    <h1>Security Settings</h1>
-    <form on:submit|preventDefault={submit1}>
-        <input
-                type="email" required placeholder="Email" bind:value="{email}"><br>
-        <input type="password" required placeholder="New password" bind:value="{password}"> <br>
-        <input id="password-confirm" type="password" required placeholder="Confirm new password"
-               bind:value="{confirmPassword}">
-        <br>
-        <button
-        >Update Security Settings
-        </button>
-        {#if pendingApiCall1}
-            <DefaultSpinner></DefaultSpinner>
+    <div>
+        <h1>Security Settings / Danger Zone</h1>
+        <form on:submit|preventDefault={submit1}>
+            <input
+                    type="email" required placeholder="Email" bind:value="{email}"><br>
+
+            <button
+            >Update Email
+            </button>
+            {#if pendingApiCall1}
+                <DefaultSpinner></DefaultSpinner>
+            {/if}
+        </form>
+        {#if showSuccessMessage1}
+            <p>Your Email has been updated.</p>
         {/if}
-    </form>
-    {#if showSuccessMessage1}
-        <p>Your Security Settings have been updated.</p>
-    {/if}
-
-    <hr>
-
-    <h1>Custom Settings</h1>
-    <form on:submit|preventDefault={submit2}>
-        <input
-                required placeholder="Fullname" bind:value="{fullname}"><br>
-
         <br>
-        <button>Update Custom Settings</button>
-        {#if pendingApiCall2}
-            <DefaultSpinner></DefaultSpinner>
+        <form on:submit|preventDefault={submit2}>
+            <input type="password" required placeholder="New password" bind:value="{password}"> <br>
+            <input id="password-confirm" type="password" required placeholder="Confirm new password"
+                   bind:value="{confirmPassword}">
+            <br>
+            <button
+            >Update Password
+            </button>
+            {#if pendingApiCall1}
+                <DefaultSpinner></DefaultSpinner>
+            {/if}
+        </form>
+        <hr>
+
+        <h1>Custom Settings</h1>
+        <form on:submit|preventDefault={submit3}>
+            <input
+                    required placeholder="Fullname" bind:value="{fullname}"><br>
+
+            <br>
+            <button>Update Custom Settings</button>
+            {#if pendingApiCall3}
+                <DefaultSpinner></DefaultSpinner>
+            {/if}
+        </form>
+        {#if showSuccessMessage3}
+            <p>Your Custom Settings have been updated.</p>
         {/if}
-    </form>
-    {#if showSuccessMessage2}
-        <p>Your Custom Settings have been updated.</p>
-    {/if}
 
 
-</div>
+    </div>
+</Authenticated >

@@ -31,6 +31,7 @@
         <hr>
 
         <div>
+
             <Route path="register" component="{Register}"/>
             <Route path="recover" component="{Recover}"/>
             <Route path="signin" component="{Signin}"/>

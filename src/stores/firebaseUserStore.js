@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import GoTrue from 'gotrue-js';
 import { navigate } from "svelte-routing";
 
@@ -25,7 +25,7 @@ var firebaseConfig = {
 // Initialize Firebase
 //firebase.initializeApp(firebaseConfig);
 firebase.initializeApp(firebaseConfig);
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
 // firebase specific
 let userLoaded = false;
@@ -45,31 +45,44 @@ function getCurrentUser () {
 
 export let authUserStore = writable(null);
 
-async function init () {
-    let user = await getCurrentUser()
-    user && authUserStore.update(store => userFromFireBase(user));
-}
 
-init()
-
-//todo
 export async function logout () {
 
     // let user = await getCurrentUser()
-    firebase.auth().signOut().then(() => {
+    firebase.auth().signOut().then((data) => {
         console.log(authUserStore)
-        authUserStore.update((user) => undefined)
         navigate("/", { replace: true });
+        //change the store after nav to avoid template errors needing to read email
+        authUserStore.update((user) => null)
     }).catch((e) => {
         alert(e.message)
     });
 }
 
-//todo
 
-export async function updateUserSecuritySettings (email, password) {
+export async function updateUserEmail (email) {
+
+    const storeValue = get(authUserStore)
+
     try {
-        const updatedUser = await goTrueUser.update({ email: email, password: password })
+        if (storeValue.email !== email) {
+            await firebase.auth().currentUser.updateEmail(email)
+        }
+        debugger
+        console.log(updatedUser)
+
+        authUserStore.update(() => updatedUser)
+    } catch (e) {
+        alert(e.message)
+    }
+}
+
+export async function updateUserPassword (email) {
+    try {
+        if ($authUserStore.email !== email) {
+            await firebase.auth().currentUser.updateEmail(email)
+        }
+        debugger
         console.log(updatedUser)
 
         authUserStore.update(() => updatedUser)
@@ -93,7 +106,7 @@ export async function updateUserCustomSettings (fullname) {
 
 export async function signin (email, password) {
     try {
-        let {user} = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
+        let { user } = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
         if (user.emailVerified) {
 
             authUserStore.update(() => userFromFireBase(user))
@@ -126,3 +139,7 @@ export function requestPasswordRecovery (email) {
     return firebase.auth().sendPasswordResetEmail(email)
 }
 
+export async function backendInit () {
+    let user = await getCurrentUser()
+    user && authUserStore.update(store => userFromFireBase(user));
+}
