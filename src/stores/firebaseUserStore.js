@@ -66,7 +66,6 @@ export async function updateUserEmail (email) {
     try {
         let updatedUser = await firebase.auth().currentUser.updateEmail(email)
 
-        authUserStore.update(() => updatedUser)
     } catch (e) {
         alert(e.message)
         throw new Error()
