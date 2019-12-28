@@ -7,5 +7,5 @@
     }
 </script>
 {#if $authUserStore}
-    <slot authUser={$authUserStore}></slot>
+    <slot ></slot>
 {/if}

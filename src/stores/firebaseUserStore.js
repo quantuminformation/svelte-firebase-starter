@@ -62,18 +62,14 @@ export async function logout () {
 
 export async function updateUserEmail (email) {
 
-    const storeValue = get(authUserStore)
 
     try {
-        if (storeValue.email !== email) {
-            await firebase.auth().currentUser.updateEmail(email)
-        }
-        debugger
-        console.log(updatedUser)
+        let updatedUser = await firebase.auth().currentUser.updateEmail(email)
 
         authUserStore.update(() => updatedUser)
     } catch (e) {
         alert(e.message)
+        throw new Error()
     }
 }
 
