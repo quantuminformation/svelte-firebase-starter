@@ -3,6 +3,7 @@
     import Register from "./components/Register.svelte";
     import Recover from "./components/Recover.svelte";
     import Signin from "./components/Signin.svelte";
+    import Users from "./components/Users.svelte";
     import Settings from "./components/Settings.svelte";
     import Home from "./components/Home.svelte";
     import { authUserStore, logout } from './stores/userStore';
@@ -28,6 +29,8 @@
             <a href="/settings" use:link>Settings</a>
             <button on:click={logout}>Logout</button>
         {/if}
+            <a href="/users" use:link>Users</a>
+
         <hr>
 
         <div>
@@ -36,6 +39,7 @@
             <Route path="recover" component="{Recover}"/>
             <Route path="signin" component="{Signin}"/>
             <Route path="settings" component="{Settings}"/>
+            <Route path="users" component="{Users}"/>
             <Route path="/" component="{Home}"/>
         </div>
 </Router>
