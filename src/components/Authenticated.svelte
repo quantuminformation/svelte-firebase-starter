@@ -1,11 +1,12 @@
 <script>
+    import { navigate } from "svelte-routing";
 
-    import { authUserStore, updateUserEmail, updateUserPassword, updateUserCustomSettings } from '../stores/userStore';
+    import { authUserStore } from '../stores/userStore';
 
     $: if (!$authUserStore) {
         navigate('/', { replace: true });
     }
 </script>
 {#if $authUserStore}
-    <slot ></slot>
+    <slot></slot>
 {/if}

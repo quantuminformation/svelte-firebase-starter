@@ -51,9 +51,11 @@ export async function logout () {
     // let user = await getCurrentUser()
     firebase.auth().signOut().then((data) => {
         console.log(authUserStore)
-        navigate("/", { replace: true });
+
+        // we let the auth route handle this nav now so if they are in a non auth route the dont have to be moved
+        // navigate("/", { replace: true });
         //change the store after nav to avoid template errors needing to read email
-        authUserStore.update((user) => null)
+        authUserStore.update((user) => null) //this will cause a redirect
     }).catch((e) => {
         alert(e.message)
     });
@@ -72,17 +74,13 @@ export async function updateUserEmail (email) {
     }
 }
 
-export async function updateUserPassword (email) {
+export async function updateUserPassword (password) {
     try {
-        if ($authUserStore.email !== email) {
-            await firebase.auth().currentUser.updateEmail(email)
-        }
-        debugger
-        console.log(updatedUser)
+        await firebase.auth().currentUser.updatePassword(password)
 
-        authUserStore.update(() => updatedUser)
     } catch (e) {
         alert(e.message)
+        throw new Error()
     }
 }
 

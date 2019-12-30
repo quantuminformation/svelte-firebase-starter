@@ -9,6 +9,7 @@
 
     //since this is in the authenticated HOC $authUserStore is guaranteed to be there
     let storeClone = { ...$authUserStore }
+    let password = ""
     let confirmPassword = ""
 
     let showSuccessMessage1 = false
@@ -33,21 +34,21 @@
         }
     }
 
-    /*    function submit2 (event) {
+
+        function submit2 (event) {
             if (password === confirmPassword) {
-                pendingApiCall1 = true
-                updateUserSecuritySettings(email, password).then(newUser => {
-                    showSuccessMessage1 = true
-                    pendingApiCall1 = false
+                pendingApiCall2 = true
+                updateUserPassword( password).then(newUser => {
+                    showSuccessMessage2 = true
+                    pendingApiCall2 = false
                 }).catch(e => {
-                    pendingApiCall1 = false
-                    console.log(e)
-                    alert(e.message)
+                    pendingApiCall2 = false
                 });
             } else {
                 alert('Your passwords do not match')
             }
         }
+        /*
 
         function submit3 (event) {
             /!*
@@ -90,7 +91,7 @@
             <p>Your Email has been updated.</p>
         {/if}
         <br>
-        <!--       <form on:submit|preventDefault={submit2}>
+               <form on:submit|preventDefault={submit2}>
                    <input type="password" required placeholder="New password" bind:value="{password}"> <br>
                    <input id="password-confirm" type="password" required placeholder="Confirm new password"
                           bind:value="{confirmPassword}">
@@ -98,11 +99,15 @@
                    <button
                    >Update Password
                    </button>
-                   {#if pendingApiCall1}
+                   {#if pendingApiCall2}
                        <DefaultSpinner></DefaultSpinner>
                    {/if}
                </form>
-               <hr>-->
+        {#if showSuccessMessage2}
+        <!--todo this coudl change depending onthe backend-->
+            <p>Your Password has been updated.</p>
+        {/if}
+               <hr>
 
         <!--       <h1>Custom Settings</h1>
                <form on:submit|preventDefault={submit3}>
