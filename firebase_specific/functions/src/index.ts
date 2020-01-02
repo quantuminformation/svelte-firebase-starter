@@ -31,3 +31,10 @@ export const makeUppercase = functions.database.ref('/messages/{pushId}/original
     // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
     return snapshot.ref.parent.child('uppercase').set(uppercase);
 });
+
+exports.createUserCustomDataRow = functions.auth.user().onCreate((user) => {
+
+    const snapshot = await admin.database().ref('/usersCustomData').push({ uid: user.uid });
+    // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
+    console.log(snapshot)
+});
