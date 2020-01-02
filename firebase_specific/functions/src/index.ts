@@ -8,6 +8,7 @@ import * as functions from 'firebase-functions';
 // });
 
 import * as admin from 'firebase-admin'
+import { DataSnapshot } from "firebase-functions/lib/providers/database";
 
 admin.initializeApp();
 
@@ -20,7 +21,7 @@ export const addMessage = functions.https.onRequest(async (req, res) => {
     res.redirect(303, snapshot.ref.toString());
 });
 
-export const makeUppercase = functions.database.ref('/messages/{pushId}/original').onCreate((snapshot, context) => {
+export const makeUppercase = functions.database.ref('/messages/{pushId}/original').onCreate((snapshot:DataSnapshot, context) => {
     // Grab the current value of what was written to the Realtime Database.
     const original = snapshot.val();
     console.log('Uppercasing', context.params.pushId, original);
