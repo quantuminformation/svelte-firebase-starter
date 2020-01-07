@@ -119,6 +119,7 @@ export async function signin (email, password) {
 export async function register (email, password) {
     try {
         let newUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        console.log(newUser.additionalUserInfo())
         newUser.user.sendEmailVerification()
         console.log('registered ' + newUser)
     } catch (e) {
@@ -133,8 +134,13 @@ export function requestPasswordRecovery (email) {
 }
 
 export async function backendInit () {
-    let user = await getCurrentUser()
-    user && authUserStore.update(store => userFromFireBase(user));
+    try {
+        let user = await getCurrentUser()
+        user && authUserStore.update(store => userFromFireBase(user));
+
+    } catch (e) {
+        throw e.message
+    }
 }
 
 export async function getUsers (nextPageToken) {
@@ -142,20 +148,19 @@ export async function getUsers (nextPageToken) {
     let uid = firebase.auth().currentUser.uid
 
 
-
     // List batch of users, 1000 at a time.
-/*    firebase.auth().listUsers(1000, nextPageToken)
-        .then(function (listUsersResult) {
-            listUsersResult.users.forEach(function (userRecord) {
-                console.log('user', userRecord.toJSON());
-            });
-            if (listUsersResult.pageToken) {
-                // List next batch of users.
-                listAllUsers(listUsersResult.pageToken);
-            }
-        })
-        .catch(function (error) {
-            console.log('Error listing users:', error);
-        });*/
+    /*    firebase.auth().listUsers(1000, nextPageToken)
+            .then(function (listUsersResult) {
+                listUsersResult.users.forEach(function (userRecord) {
+                    console.log('user', userRecord.toJSON());
+                });
+                if (listUsersResult.pageToken) {
+                    // List next batch of users.
+                    listAllUsers(listUsersResult.pageToken);
+                }
+            })
+            .catch(function (error) {
+                console.log('Error listing users:', error);
+            });*/
 }
 
