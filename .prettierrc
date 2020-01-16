@@ -1,7 +1,6 @@
 {
-  "singleQuote": true,
   "semi": false,
-  "printWidth": 70,
+  "printWidth": 100,
   "plugins": [
     "svelte"
   ]

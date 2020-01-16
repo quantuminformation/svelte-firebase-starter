@@ -2,7 +2,6 @@ import App from './App.svelte';
 import { backendInit } from './stores/userStore'
 
 
-let app
 
 function getapp () {
     return  new App({
@@ -22,5 +21,3 @@ async function bootstrap () {
 }
 bootstrap()
 
-
-export default app;

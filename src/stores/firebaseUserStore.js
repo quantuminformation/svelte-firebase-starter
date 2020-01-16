@@ -1,5 +1,4 @@
-import { writable, get } from 'svelte/store';
-import GoTrue from 'gotrue-js';
+import { writable } from 'svelte/store';
 import { navigate } from "svelte-routing";
 
 import * as firebaseOriginal from "firebase/app";
@@ -49,13 +48,13 @@ export let authUserStore = writable(null);
 export async function logout () {
 
     // let user = await getCurrentUser()
-    firebase.auth().signOut().then((data) => {
+    firebase.auth().signOut().then(() => {
         console.log(authUserStore)
 
         // we let the auth route handle this nav now so if they are in a non auth route the dont have to be moved
         // navigate("/", { replace: true });
         //change the store after nav to avoid template errors needing to read email
-        authUserStore.update((user) => null) //this will cause a redirect
+        authUserStore.update(() => null) //this will cause a redirect
     }).catch((e) => {
         alert(e.message)
     });
@@ -119,7 +118,6 @@ export async function signin (email, password) {
 export async function register (email, password) {
     try {
         let newUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        console.log(newUser.additionalUserInfo())
         newUser.user.sendEmailVerification()
         console.log('registered ' + newUser)
     } catch (e) {
@@ -136,7 +134,7 @@ export function requestPasswordRecovery (email) {
 export async function backendInit () {
     try {
         let user = await getCurrentUser()
-        user && authUserStore.update(store => userFromFireBase(user));
+        user && authUserStore.update(() => userFromFireBase(user));
 
     } catch (e) {
         throw e.message

@@ -5,7 +5,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "deploy:firebase": "npn run build && firebase deploy",
-    "start": "sirv public --single"
+    "start": "sirv public --single",
+    "lint": "eslint src"
   },
   "devDependencies": {
     "rollup": "^1.27.14",
@@ -16,7 +17,11 @@
     "rollup-plugin-terser": "^5.1.3",
     "svelte": "^3.16.7",
     "prettier": "^1.19.1",
-    "prettier-plugin-svelte": "^0.7.0"
+    "prettier-plugin-svelte": "^0.7.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1"
   },
   "dependencies": {
     "firebase": "^7.6.1",

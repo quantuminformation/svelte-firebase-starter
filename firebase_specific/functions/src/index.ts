@@ -32,9 +32,43 @@ export const makeUppercase = functions.database.ref('/messages/{pushId}/original
     return snapshot.ref.parent.child('uppercase').set(uppercase);
 });
 
-exports.createUserCustomDataRow = functions.auth.user().onCreate((user) => {
+
+
+
+
+export  const createUserCustomDataRow = functions.auth.user().onCreate(async(user) => {
 
     const snapshot = await admin.database().ref('/usersCustomData').push({ uid: user.uid });
     // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
     console.log(snapshot)
 });
+
+
+
+
+
+
+
+
+
+
+
+
+function listAllUsers(nextPageToken:string) {
+    // List batch of users, 1000 at a time.
+    admin.auth().listUsers(1000, nextPageToken)
+    .then(function(listUsersResult) {
+        listUsersResult.users.forEach(function(userRecord) {
+            console.log('user', userRecord.toJSON());
+        });
+        if (listUsersResult.pageToken) {
+            // List next batch of users.
+            listAllUsers(listUsersResult.pageToken);
+        }
+    })
+    .catch(function(error) {
+        console.log('Error listing users:', error);
+    });
+}
+// Start listing users from the beginning, 1000 at a time.
+listAllUsers();
