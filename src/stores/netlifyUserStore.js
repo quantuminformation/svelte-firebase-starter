@@ -18,7 +18,7 @@ export const authUserStore = writable(goTrueUser);
 export function logout () {
     goTrueUser.logout().then(() => {
         console.log(authUserStore)
-        authUserStore.update((user) => undefined)
+        authUserStore.update(() => undefined)
         navigate("/", { replace: true });
     }).catch((e) => {
         alert(e.message)
@@ -98,10 +98,10 @@ export async function recover (token) {
 // custom logic for registration
 
 var hash = window.location.hash.substr(1);
-var result = hash.split('&').reduce(function (result, item) {
+var result = hash.split('&').reduce(function (acc, item) {
     var parts = item.split('=');
-    result[parts[0]] = parts[1];
-    return result;
+    acc[parts[0]] = parts[1];
+    return acc;
 }, {});
 if (result.confirmation_token) {
     confirm(result.confirmation_token)

@@ -64,8 +64,8 @@ export async function logout () {
 export async function updateUserEmail (email) {
 
 
-    try {
-        let updatedUser = await firebase.auth().currentUser.updateEmail(email)
+    try {// let updatedUser = if need access
+         await firebase.auth().currentUser.updateEmail(email)
 
     } catch (e) {
         alert(e.message)
@@ -85,14 +85,14 @@ export async function updateUserPassword (password) {
 
 //todo
 export async function updateUserCustomSettings (fullname) {
-    try {
+   /* try {
         const updatedUser = await goTrueUser.update({ data: { fullname: fullname } })
         console.log(updatedUser)
 
         authUserStore.update(() => updatedUser)
     } catch (e) {
         alert(e.message)
-    }
+    }*/
 }
 
 
