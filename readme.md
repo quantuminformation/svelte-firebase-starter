@@ -3,6 +3,8 @@
 An SPA example for people to quickly start churning out fullstack apps in Svelte with various backends. In order to reduce clutter I have tried to group related
 backend files in there own folders as much as possble, however some files live at the root as it just makes things easier with the cli for eg netlify and firebase.
 
+The Svelte app and Netlify stuff uses JavaScript while the firebase functions use TypeScript
+
 # Videos!
 Best way to get up to speed is to watch these videos: 
 

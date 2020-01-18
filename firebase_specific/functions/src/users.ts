@@ -1,10 +1,11 @@
 import * as admin from "firebase-admin"
+import UserRecord = admin.auth.UserRecord
 
+const totalUsers: any = []
 export async function listAllUsers(nextPageToken: string) {
-    let totalUsers = []
     try {
         // List batch of users, 1000 at a time.
-        let listUsersResult = await admin.auth().listUsers(1000, nextPageToken)
+        const listUsersResult = await admin.auth().listUsers(1000, nextPageToken)
 
         totalUsers.push(listUsersResult)
         listUsersResult.users.forEach(function(userRecord) {
@@ -12,22 +13,32 @@ export async function listAllUsers(nextPageToken: string) {
         })
         if (listUsersResult.pageToken) {
             // List next batch of users.
-            listAllUsers(listUsersResult.pageToken)
+            await listAllUsers(listUsersResult.pageToken)
         }
-        return totalUsers
+        const parsedUsers = totalUsers.users.map(stripUserSensitiveInfo)
+
+        return parsedUsers
     } catch (error) {
         console.log("Error listing users:", error)
-        throw "Error users"
+        throw new Error("Error users")
     }
 }
 
 export async function getSomeUsers(amount: number) {
     try {
         // List batch of users, 1000 at a time.
-        let listUsersResult = await admin.auth().listUsers(amount)
-        return listUsersResult
+        const listUsersResult = await admin.auth().listUsers(amount)
+        const parsedUsers = listUsersResult.users.map(stripUserSensitiveInfo)
+        return parsedUsers
     } catch (error) {
         console.log("Error listing users:", error)
-        throw "Error users"
+        throw new Error("Error users")
     }
+}
+
+/**
+ * We 100% don't want to return user emails!!
+ */
+const stripUserSensitiveInfo = function(user: UserRecord) {
+    return { uid: user.uid, displayName: user.displayName }
 }
