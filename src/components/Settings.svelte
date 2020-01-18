@@ -48,14 +48,10 @@
                 alert('Your passwords do not match')
             }
         }
-        /*
 
         function submit3 (event) {
-            /!*
-                    if (password === confirmPassword) {
-            *!/
             pendingApiCall3 = true
-            updateUserCustomSettings(authUser.fullname).then(newUser => {
+            updateUserCustomSettings(storeClone.displayName).then(newUser => {
                 showSuccessMessage3 = true
                 pendingApiCall3 = false
             }).catch(e => {
@@ -63,11 +59,11 @@
                 console.log(e)
                 alert(e.message)
             });
-            /!*   }
+            /*   }
                else{
                    alert('Your passwords do not match')
-               }*!/
-        }*/
+               }*/
+        }
 
 </script>
 
@@ -104,15 +100,15 @@
                    {/if}
                </form>
         {#if showSuccessMessage2}
-        <!--todo this coudl change depending onthe backend-->
+        <!--todo this could change depending onthe backend-->
             <p>Your Password has been updated.</p>
         {/if}
                <hr>
 
-        <!--       <h1>Custom Settings</h1>
+               <h1>Custom Settings</h1>
                <form on:submit|preventDefault={submit3}>
                    <input
-                           required placeholder="Fullname" bind:value="{authUser.fullname}"><br>
+                           required placeholder="Display Name" bind:value="{storeClone.displayName}"><br>
 
                    <br>
                    <button>Update Custom Settings</button>
@@ -123,7 +119,6 @@
                {#if showSuccessMessage3}
                    <p>Your Custom Settings have been updated.</p>
                {/if}
-       -->
 
     </div>
 </Authenticated>

@@ -15,7 +15,7 @@
 <Router>
     <h1>Svetle Fullstack Starter</h1>
     {#if $authUserStore}
-        <p>Logged in as {$authUserStore.email}</p>
+        <p>Logged in as {$authUserStore.displayName || $authUserStore.email}</p>
     {:else}
         <p>Not logged in</p>
     {/if}

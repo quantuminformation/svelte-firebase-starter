@@ -47,11 +47,9 @@ export const createUserCustomDataRow = functions.auth.user().onCreate(async user
     console.log(snapshot)
 })
 
-
-
 export const listUsers = functions.https.onRequest(async (req, res) => {
     const data = await getSomeUsers(5)
     //res.end('Retrieved users list successfully.' + data);
     res.json(data)
-//    res.redirect(303, snapshot.ref.toString())
+    //    res.redirect(303, snapshot.ref.toString())
 })

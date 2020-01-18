@@ -26,7 +26,6 @@ export async function listAllUsers(nextPageToken: string) {
 
 export async function getSomeUsers(amount: number) {
     try {
-        // List batch of users, 1000 at a time.
         const listUsersResult = await admin.auth().listUsers(amount)
         const parsedUsers = listUsersResult.users.map(stripUserSensitiveInfo)
         return parsedUsers

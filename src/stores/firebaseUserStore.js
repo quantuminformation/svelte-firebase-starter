@@ -1,13 +1,12 @@
-import { writable } from 'svelte/store';
-import { navigate } from "svelte-routing";
+import { writable } from "svelte/store"
+import { navigate } from "svelte-routing"
 
-import * as firebaseOriginal from "firebase/app";
+import * as firebaseOriginal from "firebase/app"
 
 let firebase = firebaseOriginal.default
-import "firebase/auth";
-import { userFromFireBase } from '../model/User'
+import "firebase/auth"
+import { userFromFireBase } from "../model/User"
 //import "firebase/analytics";
-
 
 //import firebase from "firebase";
 
@@ -20,63 +19,61 @@ var firebaseConfig = {
     messagingSenderId: "684795141693",
     appId: "1:684795141693:web:bb22a3283361cfc381d454",
     measurementId: "G-Y1SRV3FGND"
-};
+}
 // Initialize Firebase
 //firebase.initializeApp(firebaseConfig);
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig)
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
 // firebase specific
-let userLoaded = false;
+let userLoaded = false
 
-function getCurrentUser () {
+function getCurrentUser() {
     return new Promise((resolve, reject) => {
         if (userLoaded) {
-            resolve(firebase.auth().currentUser);
+            resolve(firebase.auth().currentUser)
         }
         const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-            userLoaded = true;
-            unsubscribe();
-            resolve(user);
-        }, reject);
-    });
+            userLoaded = true
+            unsubscribe()
+            resolve(user)
+        }, reject)
+    })
 }
 
-export let authUserStore = writable(null);
+export let authUserStore = writable(null)
 
-
-export async function logout () {
-
+export async function logout() {
     // let user = await getCurrentUser()
-    firebase.auth().signOut().then(() => {
-        console.log(authUserStore)
+    firebase
+        .auth()
+        .signOut()
+        .then(() => {
+            console.log(authUserStore)
 
-        // we let the auth route handle this nav now so if they are in a non auth route the dont have to be moved
-        // navigate("/", { replace: true });
-        //change the store after nav to avoid template errors needing to read email
-        authUserStore.update(() => null) //this will cause a redirect
-    }).catch((e) => {
-        alert(e.message)
-    });
+            // we let the auth route handle this nav now so if they are in a non auth route the dont have to be moved
+            // navigate("/", { replace: true });
+            //change the store after nav to avoid template errors needing to read email
+            authUserStore.update(() => null) //this will cause a redirect
+        })
+        .catch(e => {
+            alert(e.message)
+        })
 }
 
-
-export async function updateUserEmail (email) {
-
-
-    try {// let updatedUser = if need access
-         await firebase.auth().currentUser.updateEmail(email)
-
+export async function updateUserEmail(email) {
+    try {
+        // let updatedUser = if need access
+        await firebase.auth().currentUser.updateEmail(email)
     } catch (e) {
         alert(e.message)
         throw new Error()
     }
 }
 
-export async function updateUserPassword (password) {
+export async function updateUserPassword(password) {
     try {
         await firebase.auth().currentUser.updatePassword(password)
-
     } catch (e) {
         alert(e.message)
         throw new Error()
@@ -84,28 +81,25 @@ export async function updateUserPassword (password) {
 }
 
 //todo
-export async function updateUserCustomSettings (fullname) {
-   /* try {
-        const updatedUser = await goTrueUser.update({ data: { fullname: fullname } })
-        console.log(updatedUser)
-
-        authUserStore.update(() => updatedUser)
+export async function updateUserCustomSettings(displayName) {
+    try {
+        await firebase.auth().currentUser.updateProfile({ displayName: displayName })
+        authUserStore.update(user => {
+            return { ...user, displayName: displayName }
+        })
     } catch (e) {
         alert(e.message)
-    }*/
+    }
 }
 
-
-export async function signin (email, password) {
+export async function signin(email, password) {
     try {
         let { user } = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
         if (user.emailVerified) {
-
             authUserStore.update(() => userFromFireBase(user))
-            navigate("/", { replace: true });
-
+            navigate("/", { replace: true })
         } else {
-            alert('User not found, if you registered before, have you checked your email?')
+            alert("User not found, if you registered before, have you checked your email?")
             throw new Error() // no message needed for the UI to stop the spinner
         }
         console.log(user)
@@ -115,36 +109,32 @@ export async function signin (email, password) {
     }
 }
 
-export async function register (email, password) {
+export async function register(email, password) {
     try {
         let newUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
         newUser.user.sendEmailVerification()
-        console.log('registered ' + newUser)
+        console.log("registered " + newUser)
     } catch (e) {
         alert(e.message)
         throw e.message
     }
-
 }
 
-export function requestPasswordRecovery (email) {
+export function requestPasswordRecovery(email) {
     return firebase.auth().sendPasswordResetEmail(email)
 }
 
-export async function backendInit () {
+export async function backendInit() {
     try {
         let user = await getCurrentUser()
-        user && authUserStore.update(() => userFromFireBase(user));
-
+        user && authUserStore.update(() => userFromFireBase(user))
     } catch (e) {
         throw e.message
     }
 }
 
-export async function getUsers (nextPageToken) {
-
+export async function getUsers(nextPageToken) {
     let uid = firebase.auth().currentUser.uid
-
 
     // List batch of users, 1000 at a time.
     /*    firebase.auth().listUsers(1000, nextPageToken)
@@ -161,4 +151,3 @@ export async function getUsers (nextPageToken) {
                 console.log('Error listing users:', error);
             });*/
 }
-
