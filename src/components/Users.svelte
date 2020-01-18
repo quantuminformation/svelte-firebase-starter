@@ -1,28 +1,25 @@
 <script>
+    import { get } from "../api"
 
+    import User from "./User.svelte"
+    import { onMount } from "svelte"
 
-    import DefaultSpinner from '../components/DefaultSpinner.svelte'
-    import { getUsers } from '../stores/userStore';
-    import Authenticated from './Authenticated.svelte'
-    import User from './User.svelte'
-    import { onMount } from 'svelte';
-    import { authUserStore } from '../stores/userStore';
-
+    let users
 
     onMount(() => {
-        getUsers()
-    });
-
-
+        get("listUsers").then(res => {
+            users = res
+            console.log(users)
+        })
+    })
 </script>
-
 
 <div>
     <h1>List of Users</h1>
 
-    {#if $authUserStore && $authUserStore.users}
-        {#each $authUserStore.users as user}
-            <User user/>
+    {#if users}
+        {#each users as user}
+            <User   {user} />
         {/each}
     {:else}
         <p>No users yet</p>

@@ -133,21 +133,3 @@ export async function backendInit() {
     }
 }
 
-export async function getUsers(nextPageToken) {
-    let uid = firebase.auth().currentUser.uid
-
-    // List batch of users, 1000 at a time.
-    /*    firebase.auth().listUsers(1000, nextPageToken)
-            .then(function (listUsersResult) {
-                listUsersResult.users.forEach(function (userRecord) {
-                    console.log('user', userRecord.toJSON());
-                });
-                if (listUsersResult.pageToken) {
-                    // List next batch of users.
-                    listAllUsers(listUsersResult.pageToken);
-                }
-            })
-            .catch(function (error) {
-                console.log('Error listing users:', error);
-            });*/
-}
