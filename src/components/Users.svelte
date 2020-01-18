@@ -19,7 +19,7 @@
 
     {#if users}
         {#each users as user}
-            <User   {user} />
+            <User {user} />
         {/each}
     {:else}
         <p>No users yet</p>

@@ -1,23 +1,18 @@
-import App from './App.svelte';
-import { backendInit } from './stores/userStore'
+import App from "./App.svelte"
+import { backendInit } from "./stores/userStore"
 
-
-
-function getapp () {
-    return  new App({
+function getapp() {
+    return new App({
         target: document.body,
-        props: {
-        }
-    });
+        props: {}
+    })
 }
 
 /**
  * Some backends need some time to get up an running
  */
-async function bootstrap () {
-
+async function bootstrap() {
     await backendInit()
     getapp()
 }
 bootstrap()
-

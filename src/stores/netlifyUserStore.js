@@ -1,31 +1,32 @@
-import { writable } from 'svelte/store';
-import GoTrue from 'gotrue-js';
-import { navigate } from "svelte-routing";
-import { userFromNetlify } from '../model/User'
+import { writable } from "svelte/store"
+import GoTrue from "gotrue-js"
+import { navigate } from "svelte-routing"
+import { userFromNetlify } from "../model/User"
 
-
-const url = 'https://svelte-netlify-identity.netlify.com/'
-const goTrueInstance =
-    new GoTrue({
-        APIUrl: `${url}/.netlify/identity`,
-        setCookie: true,
-    })
+const url = "https://svelte-netlify-identity.netlify.com/"
+const goTrueInstance = new GoTrue({
+    APIUrl: `${url}/.netlify/identity`,
+    setCookie: true
+})
 
 const goTrueUser = goTrueInstance.currentUser() || undefined
 
-export const authUserStore = writable(goTrueUser);
+export const authUserStore = writable(goTrueUser)
 
-export function logout () {
-    goTrueUser.logout().then(() => {
-        console.log(authUserStore)
-        authUserStore.update(() => undefined)
-        navigate("/", { replace: true });
-    }).catch((e) => {
-        alert(e.message)
-    });
+export function logout() {
+    goTrueUser
+        .logout()
+        .then(() => {
+            console.log(authUserStore)
+            authUserStore.update(() => undefined)
+            navigate("/", { replace: true })
+        })
+        .catch(e => {
+            alert(e.message)
+        })
 }
 
-export async function updateUserSecuritySettings (email, password) {
+export async function updateUserSecuritySettings(email, password) {
     try {
         const updatedUser = await goTrueUser.update({ email: email, password: password })
         console.log(updatedUser)
@@ -36,7 +37,7 @@ export async function updateUserSecuritySettings (email, password) {
     }
 }
 
-export async function updateUserCustomSettings (fullname) {
+export async function updateUserCustomSettings(fullname) {
     try {
         const updatedUser = await goTrueUser.update({ data: { fullname: fullname } })
         console.log(updatedUser)
@@ -47,12 +48,11 @@ export async function updateUserCustomSettings (fullname) {
     }
 }
 
-
-export async function signin (email, password) {
+export async function signin(email, password) {
     try {
         await goTrueInstance.login(email, password, true).then(user => {
             authUserStore.update(() => userFromNetlify(user))
-            window.location.assign("/");
+            window.location.assign("/")
         })
     } catch (e) {
         alert(e.message)
@@ -60,53 +60,56 @@ export async function signin (email, password) {
     }
 }
 
-export function register (email, password) {
+export function register(email, password) {
     return goTrueInstance.signup(email, password)
 }
 
-export function requestPasswordRecovery (email) {
+export function requestPasswordRecovery(email) {
     return goTrueInstance.requestPasswordRecovery(email)
 }
 
-export function confirm (token) {
-    goTrueInstance.confirm(token)
-        .then(function (response) {
-            alert("Account confirmed! Welcome to the party! You can now login with your details", JSON.stringify({ response }));
+export function confirm(token) {
+    goTrueInstance
+        .confirm(token)
+        .then(function(response) {
+            alert(
+                "Account confirmed! Welcome to the party! You can now login with your details",
+                JSON.stringify({ response })
+            )
         })
-        .catch(function (e) {
-            alert(e.message);
-        });
+        .catch(function(e) {
+            alert(e.message)
+        })
 }
 
-
-export async function recover (token) {
+export async function recover(token) {
     try {
-
         let existingUser = await goTrueInstance.recover(token)
 
-        alert("Account recovered! You are now logged in. Please change your password immediately by updating your security settings.", JSON.stringify({ response }));
+        alert(
+            "Account recovered! You are now logged in. Please change your password immediately by updating your security settings.",
+            JSON.stringify({ response })
+        )
         console.log(`recovered account: ${existingUser}`)
         authUserStore.update(() => existingUser)
-        window.location.assign("/settings");
+        window.location.assign("/settings")
     } catch (e) {
-        console.log('something wrong with recovery')
-        alert(e.message);
+        console.log("something wrong with recovery")
+        alert(e.message)
     }
-
 }
 
 // custom logic for registration
 
-var hash = window.location.hash.substr(1);
-var result = hash.split('&').reduce(function (acc, item) {
-    var parts = item.split('=');
-    acc[parts[0]] = parts[1];
-    return acc;
-}, {});
+var hash = window.location.hash.substr(1)
+var result = hash.split("&").reduce(function(acc, item) {
+    var parts = item.split("=")
+    acc[parts[0]] = parts[1]
+    return acc
+}, {})
 if (result.confirmation_token) {
     confirm(result.confirmation_token)
 } else if (result.recovery_token) {
-    console.log('recovering account')
+    console.log("recovering account")
     recover(result.recovery_token)
 }
-

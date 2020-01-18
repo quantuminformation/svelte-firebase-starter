@@ -1,26 +1,24 @@
 <script>
-
-    import { signin } from "../stores/userStore";
-    import DefaultSpinner from '../components/DefaultSpinner.svelte'
-    import { navigate,link } from "svelte-routing";
-    import { authUserStore } from '../stores/userStore';
+    import { signin } from "../stores/userStore"
+    import DefaultSpinner from "../components/DefaultSpinner.svelte"
+    import { navigate, link } from "svelte-routing"
+    import { authUserStore } from "../stores/userStore"
 
     if ($authUserStore) {
-        navigate("/", { replace: true });
+        navigate("/", { replace: true })
     }
 
     let password = ""
     let email = ""
     let pendingApiCall = false
 
-    export function submit (event) {
+    export function submit(event) {
         pendingApiCall = true
         signin(email, password).catch(e => {
             pendingApiCall = false
-        });
+        })
     }
 </script>
-
 
 <div>
 
@@ -29,18 +27,27 @@
         <form on:submit|preventDefault={submit} id="main-form">
 
             <input
-                    id="inline-full-name" type="email" required placeholder="Email" bind:value="{email}">
+                id="inline-full-name"
+                type="email"
+                required
+                placeholder="Email"
+                bind:value={email} />
             <input
-                    id="inline-username" type="password" required placeholder="Your password" bind:value="{password}">
+                id="inline-username"
+                type="password"
+                required
+                placeholder="Your password"
+                bind:value={password} />
 
-            <button
-            >Signin
-            </button>
+            <button>Signin</button>
             {#if pendingApiCall}
-                <DefaultSpinner></DefaultSpinner>
+                <DefaultSpinner />
             {/if}
         </form>
-<p>Forgot password? Click <a use:link href="/recover">Here to reset it.</a> </p>
+        <p>
+            Forgot password? Click
+            <a use:link href="/recover">Here to reset it.</a>
+        </p>
 
     </div>
 </div>

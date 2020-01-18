@@ -132,4 +132,3 @@ export async function backendInit() {
         throw e.message
     }
 }
-

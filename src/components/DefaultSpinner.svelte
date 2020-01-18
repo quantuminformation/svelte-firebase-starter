@@ -1,5 +1,5 @@
 <script>
-    import Spinner from 'svelte-spinner';
+    import Spinner from "svelte-spinner"
 </script>
 
 <style>
@@ -7,8 +7,5 @@
         display: inline;
     }
 </style>
-<Spinner  size="50"
-         speed="750"
-         color="blue"
-         thickness="2"
-         gap="40"></Spinner>
+
+<Spinner size="50" speed="750" color="blue" thickness="2" gap="40" />
