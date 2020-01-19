@@ -1,11 +1,11 @@
 <script>
     import { Router, Route, link } from "svelte-routing"
-    import Register from "./components/Register.svelte"
-    import Recover from "./components/Recover.svelte"
-    import Signin from "./components/Signin.svelte"
-    import Users from "./components/Users.svelte"
-    import Settings from "./components/Settings.svelte"
-    import Home from "./components/Home.svelte"
+    import Register from "./routeComponents/Register.svelte"
+    import Recover from "./routeComponents/Recover.svelte"
+    import Signin from "./routeComponents/Signin.svelte"
+    import Users from "./routeComponents/Users.svelte"
+    import Settings from "./routeComponents/Settings.svelte"
+    import Home from "./routeComponents/Home.svelte"
     import { authUserStore, logout } from "./stores/userStore"
 
     console.log($authUserStore)

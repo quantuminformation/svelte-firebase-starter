@@ -109,11 +109,12 @@ export async function signin(email, password) {
     }
 }
 
-export async function register(email, password) {
+export async function register(email, password, displayName) {
     try {
-        let newUser = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        newUser.user.sendEmailVerification()
-        console.log("registered " + newUser)
+        let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        userCredential.user.updateProfile({ displayName: displayName })
+        userCredential.user.sendEmailVerification()
+        console.log("registered " + userCredential)
     } catch (e) {
         alert(e.message)
         throw e.message

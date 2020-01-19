@@ -1,7 +1,7 @@
 <script>
     import { get } from "../api"
 
-    import User from "./User.svelte"
+    import User from "../components/User.svelte"
     import { onMount } from "svelte"
 
     let users

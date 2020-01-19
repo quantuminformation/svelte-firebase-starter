@@ -115,8 +115,7 @@
         <form on:submit|preventDefault={submit3}>
             <input required placeholder="Display Name" bind:value={storeClone.displayName} />
             <br />
-
-            <br />
+<p>Your profile url will be siteBaseUR</p>
             <button>Update Custom Settings</button>
             {#if pendingApiCall3}
                 <DefaultSpinner />
