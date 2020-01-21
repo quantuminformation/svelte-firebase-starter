@@ -3,10 +3,9 @@
 
         "users": {
             "$uid": {
-                ".write": "auth.uid === $uid"
+              ".read": "auth != null",
+              ".write": "auth.uid === $uid"
             }
-        },
-      ".read": "auth != null",
-      ".write": "auth != null"
+        }
     }
 }
