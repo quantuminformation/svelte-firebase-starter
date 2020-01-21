@@ -5,6 +5,7 @@ import * as firebaseOriginal from "firebase/app"
 
 let firebase = firebaseOriginal.default
 import "firebase/auth"
+import "firebase/database"
 import { userFromFireBase } from "../model/User"
 //import "firebase/analytics";
 
@@ -80,12 +81,28 @@ export async function updateUserPassword(password) {
     }
 }
 
-//todo
 export async function updateUserCustomSettings(displayName) {
     try {
         await firebase.auth().currentUser.updateProfile({ displayName: displayName })
         authUserStore.update(user => {
             return { ...user, displayName: displayName }
+        })
+    } catch (e) {
+        alert(e.message)
+    }
+}
+export async function updateUserUsername(username) {
+    try {
+
+        await firebase
+            .database()
+            .ref("users/" + firebase.auth().currentUser.uid)
+            .set({
+                username: username
+            })
+
+        authUserStore.update(user => {
+            return { ...user, username: username }
         })
     } catch (e) {
         alert(e.message)
@@ -109,10 +126,16 @@ export async function signin(email, password) {
     }
 }
 
-export async function register(email, password, displayName) {
+export async function register(email, password, username, displayName) {
     try {
         let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        userCredential.user.updateProfile({ displayName: displayName })
+        const {user} = userCredential
+        await user.updateProfile({ displayName: displayName })
+          await firebase
+            .database()
+            .ref("users/" + user.uid)
+            .set({ username: username })
+
         userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)
     } catch (e) {

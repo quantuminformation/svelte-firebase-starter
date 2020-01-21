@@ -35,6 +35,7 @@ export async function getSomeUsers(amount: number) {
     }
 }
 
+
 /**
  * We 100% don't want to return user emails!!
  */

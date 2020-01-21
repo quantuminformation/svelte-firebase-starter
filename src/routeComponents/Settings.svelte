@@ -1,11 +1,13 @@
 <script>
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
+    import { siteBaseURL } from "../../sharedCode/constants"
     import {
         authUserStore,
         updateUserEmail,
         updateUserPassword,
-        updateUserCustomSettings
+        updateUserCustomSettings,
+        updateUserUsername
     } from "../stores/userStore"
     import Authenticated from "./Authenticated.svelte"
 
@@ -20,6 +22,8 @@
     let pendingApiCall2 = false
     let showSuccessMessage3 = false
     let pendingApiCall3 = false
+    let showSuccessMessage4 = false
+    let pendingApiCall4 = false
 
     function submit1(event) {
         if (storeClone.email !== $authUserStore.email) {
@@ -56,7 +60,7 @@
     function submit3(event) {
         pendingApiCall3 = true
         updateUserCustomSettings(storeClone.displayName)
-            .then(newUser => {
+            .then(() => {
                 showSuccessMessage3 = true
                 pendingApiCall3 = false
             })
@@ -65,10 +69,19 @@
                 console.log(e)
                 alert(e.message)
             })
-        /*   }
-               else{
-                   alert('Your passwords do not match')
-               }*/
+    }
+    function submit4(event) {
+        pendingApiCall4 = true
+        updateUserUsername(storeClone.username)
+            .then(() => {
+                showSuccessMessage4 = true
+                pendingApiCall4 = false
+            })
+            .catch(e => {
+                pendingApiCall4 = false
+                console.log(e)
+                alert(e.message)
+            })
     }
 </script>
 
@@ -109,14 +122,27 @@
             <!--todo this could change depending onthe backend-->
             <p>Your Password has been updated.</p>
         {/if}
+
+        <form on:submit|preventDefault={submit4}>
+
+            <input required placeholder="Username" bind:value={storeClone.username} />
+            <br />
+            {#if storeClone.username}
+                <p>Your profile url will be at {`${siteBaseURL}${storeClone.username}`}</p>
+            {/if}
+            <button>Update Username</button>
+            {#if pendingApiCall4}
+                <DefaultSpinner />
+            {/if}
+        </form>
         <hr />
 
-        <h1>Custom Settings</h1>
+        <h1>Personal Settings</h1>
         <form on:submit|preventDefault={submit3}>
             <input required placeholder="Display Name" bind:value={storeClone.displayName} />
             <br />
-<p>Your profile url will be siteBaseUR</p>
-            <button>Update Custom Settings</button>
+
+            <button>Update Personal Settings</button>
             {#if pendingApiCall3}
                 <DefaultSpinner />
             {/if}
