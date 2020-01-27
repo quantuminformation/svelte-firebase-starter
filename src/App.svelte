@@ -6,6 +6,7 @@
     import Users from "./routeComponents/Users.svelte"
     import Settings from "./routeComponents/Settings.svelte"
     import Home from "./routeComponents/Home.svelte"
+    import Profile from "./routeComponents/Profile.svelte"
     import { authUserStore, logout } from "./stores/userStore"
 
     console.log($authUserStore)
@@ -60,6 +61,7 @@
             <Route path="signin" component={Signin} />
             <Route path="settings" component={Settings} />
             <Route path="users" component={Users} />
+            <Route path="profile:username" component={Profile} />
             <Route path="/" component={Home} />
         </div>
     </div>

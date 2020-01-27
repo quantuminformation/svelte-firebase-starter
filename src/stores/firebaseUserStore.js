@@ -93,7 +93,6 @@ export async function updateUserCustomSettings(displayName) {
 }
 export async function updateUserUsername(username) {
     try {
-
         await firebase
             .database()
             .ref("users/" + firebase.auth().currentUser.uid)
@@ -129,9 +128,9 @@ export async function signin(email, password) {
 export async function register(email, password, username, displayName) {
     try {
         let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        const {user} = userCredential
+        const { user } = userCredential
         await user.updateProfile({ displayName: displayName })
-          await firebase
+        await firebase
             .database()
             .ref("users/" + user.uid)
             .set({ username: username })
@@ -152,6 +151,22 @@ export async function backendInit() {
     try {
         let user = await getCurrentUser()
         user && authUserStore.update(() => userFromFireBase(user))
+    } catch (e) {
+        throw e.message
+    }
+}
+export async function getUserProfile(uid) {
+    try {
+        return await firebase.database().ref("users/" + uid)
+    } catch (e) {
+        throw e.message
+    }
+}
+
+export async function amIFollowing(uid) {
+    try {
+
+        return await firebase.database().ref("users/" + uid)
     } catch (e) {
         throw e.message
     }

@@ -27,7 +27,12 @@ export async function listAllUsers(nextPageToken: string) {
 export async function getSomeUsers(amount: number) {
     try {
         const listUsersResult = await admin.auth().listUsers(amount)
-        const parsedUsers = listUsersResult.users.map(stripUserSensitiveInfo)
+        const parsedUsers = listUsersResult.users
+            .map(stripUserSensitiveInfo)
+            .map(user => async (uid: string) => {
+                let userProfile = await admin.database().ref("users/" + uid)
+                return userProfile
+            })
         return parsedUsers
     } catch (error) {
         console.log("Error listing users:", error)
@@ -35,10 +40,10 @@ export async function getSomeUsers(amount: number) {
     }
 }
 
-
 /**
  * We 100% don't want to return user emails!!
  */
 const stripUserSensitiveInfo = function(user: UserRecord) {
     return { uid: user.uid, displayName: user.displayName }
 }
+
