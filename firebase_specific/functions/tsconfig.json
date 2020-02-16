@@ -7,7 +7,9 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": false,
-    "target": "es2017"
+    "target": "es2017",
+    "noImplicitAny": false,
+    "noUnusedLocals": false
   },
   "compileOnSave": true,
   "include": [

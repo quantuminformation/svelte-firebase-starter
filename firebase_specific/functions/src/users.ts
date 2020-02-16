@@ -27,16 +27,21 @@ export async function listAllUsers(nextPageToken: string) {
 export async function getSomeUsers(amount: number) {
     try {
         const listUsersResult = await admin.auth().listUsers(amount)
-        const parsedUsers = listUsersResult.users
-            .map(stripUserSensitiveInfo)
-            .map(user => async (uid: string) => {
-                let userProfile = await admin.database().ref("users/" + uid)
-                return userProfile
-            })
+        const parsedUsers = listUsersResult.users.map(stripUserSensitiveInfo).map(async user => {
+            console.log("try read_______________" + user.uid)
+            let userProfileSnapshot = await admin
+                .database()
+                .ref("users/" + user.uid)
+                .once("value")
+
+            console.log("end try read_______________" + user.uid)
+            return { ...user, userProfileSnapshot }
+        })
+
         return parsedUsers
     } catch (error) {
-        console.log("Error listing users:", error)
-        throw new Error("Error users")
+        console.error("Error listing users:", error)
+        throw new Error("Error users" + error)
     }
 }
 
@@ -46,4 +51,3 @@ export async function getSomeUsers(amount: number) {
 const stripUserSensitiveInfo = function(user: UserRecord) {
     return { uid: user.uid, displayName: user.displayName }
 }
-
