@@ -27,16 +27,19 @@ export async function listAllUsers(nextPageToken: string) {
 export async function getSomeUsers(amount: number) {
     try {
         const listUsersResult = await admin.auth().listUsers(amount)
-        const parsedUsers = listUsersResult.users.map(stripUserSensitiveInfo).map(async user => {
-            console.log("try read_______________" + user.uid)
-            let userProfileSnapshot = await admin
-                .database()
-                .ref("users/" + user.uid)
-                .once("value")
-
-            console.log("end try read_______________" + user.uid)
-            return { ...user, userProfileSnapshot }
-        })
+        let parsedUsers = []
+        const userList = listUsersResult.users.map(stripUserSensitiveInfo)
+        for (const user of userList) {
+            try {
+                let userProfileSnapshot = await admin
+                    .database()
+                    .ref("users/" + user.uid)
+                    .once("value")
+                parsedUsers.push({ ...user, userProfileSnapshot })
+            } catch (error) {
+                console.error("Error on API", error)
+            }
+        }
 
         return parsedUsers
     } catch (error) {
