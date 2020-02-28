@@ -1,4 +1,4 @@
-const base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net/"
+const base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
 
 function send({ method, path, data, token }) {
     const opts = { method, headers: {} }

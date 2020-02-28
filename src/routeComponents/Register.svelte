@@ -4,7 +4,7 @@
     import { navigate } from "svelte-routing"
     import { authUserStore } from "../stores/userStore"
     import { siteBaseURL } from "../../sharedCode/constants"
-    import { profileURL } from "../../sharedCode/utils"
+   // import { profileURL } from "../../sharedCode/utils"
 
     if ($authUserStore) {
         navigate("/", { replace: true })
