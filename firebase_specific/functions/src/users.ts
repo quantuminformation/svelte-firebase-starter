@@ -54,15 +54,7 @@ export async function getSomeUsers(amount: number) {
                     u => u.uid === snapshot.key
                 )
                 const strippedUserFromAdminList = stripUserSensitiveInfo(userFromAdminList)
-
-                console.log("begin______________")
-
-                console.log(snapshot.val())
-                console.log(snapshot)
-                console.log("end______________")
-                console.log("end______________")
-                return snapshot.val()
-                //return { ...strippedUserFromAdminList, username: snapshot.val().username }
+                return { ...strippedUserFromAdminList, username: snapshot.val().username }
             })
         })
         return parsedUsers
