@@ -157,7 +157,11 @@ export async function backendInit() {
 }
 export async function getUserProfile(uid) {
     try {
-        return await firebase.database().ref("users/" + uid)
+        let user = await firebase
+            .database()
+            .ref("users/" + uid)
+            .once("value")
+        return user
     } catch (e) {
         throw e.message
     }
@@ -165,7 +169,6 @@ export async function getUserProfile(uid) {
 
 export async function amIFollowing(uid) {
     try {
-
         return await firebase.database().ref("users/" + uid)
     } catch (e) {
         throw e.message
