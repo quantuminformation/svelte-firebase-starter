@@ -25,47 +25,44 @@ const totalUsers: any = []
     }
 }*/
 
+// thx to
 export async function getSomeUsers(amount: number) {
     try {
-        /**
-         * fetch all the users with the provided limit
-         */
-
-        const usersFromAdminListUsers: ListUsersResult = await admin.auth().listUsers(amount)
-        /**
-         * loop through the returned values and create a promise to fetch
-         * Each of their document
-         */
-        const dbUsersPromises = usersFromAdminListUsers.users.map(user => {
-            return admin
-                .database()
-                .ref("users/" + user.uid)
+        /** Cached reference to '/users' in the database. */
+        const allUsersRef = admin.database().ref("users")
+        /** An array of {uid, displayName} objects for each existing user */
+        const strippedUserRecords = await getStrippedUserRecords(amount)
+        /** An array of Promises that resolve with a user's username */
+        const usernamePromises = strippedUserRecords.map(user => {
+            return allUsersRef
+                .child(user.uid)
+                .child("username")
                 .once("value")
+                .then<string | null>(extractSnapshotValue)
         })
-        /**
-         * When all the user documents have been fetched, iterate through them and deduce their values
-         */
-        const parsedUsers = await Promise.all(dbUsersPromises).then(docSnapshots => {
-            return docSnapshots.map(snapshot => {
-                /**
-                 * The records need to be matched with the original values
-                 */
-                const userFromAdminList = usersFromAdminListUsers.users.find(
-                    u => u.uid === snapshot.key
-                )
-                const strippedUserFromAdminList = stripUserSensitiveInfo(userFromAdminList)
-                return { ...strippedUserFromAdminList, username: snapshot.val().username }
+        // When all the usernames have been fetched, iterate each one and combine them with the relevant user record
+        /** An array of filtered user data objects for each existing user */
+        const parsedUsers = await Promise.all(usernamePromises).then(usernameArray => {
+            // combine each username with the relevant user record
+            return usernameArray.map((username, i) => {
+                const userRecord = strippedUserRecords[i]
+                return { ...userRecord, username }
             })
         })
         return parsedUsers
     } catch (error) {
         console.error("Error listing users:", error)
-        throw new Error("Error users" + error)
+        throw new Error("Error listing users: " + error) // or just rethrow error?
     }
 }
 /**
- * We 100% don't want to return user emails!!
+ * Memory-friendly function to retrieve only select fields of a user's UserRecord
  */
-const stripUserSensitiveInfo = function(user: UserRecord) {
-    return { uid: user.uid, displayName: user.displayName }
+const getStrippedUserRecords = async function(amount: number) {
+    const response = await admin.auth().listUsers(amount)
+    return response.users.map(user => {
+        return { uid: user.uid, displayName: user.displayName }
+    })
+    // original response should be now marked for disposal from memory
 }
+const extractSnapshotValue = (snapshot: admin.database.DataSnapshot) => snapshot.val()
