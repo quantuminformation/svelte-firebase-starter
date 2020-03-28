@@ -1,26 +1,22 @@
 <script>
-    import { get } from "../api"
-
     import User from "../components/User.svelte"
-    import { onMount } from "svelte"
-    import Authenticated from "./Authenticated.svelte"
+    import { getUserProfile } from "../stores/userStore"
+    import DefaultSpinner from "../components/DefaultSpinner.svelte"
 
     export let user
     export let isFollowing
+    export let username
 
     const follow = uid => {}
 
-    onMount(async () => {
-        user = await getUserProfile.then(res => {
-            user = res
-            console.log(user)
-        })
+    let promise = getUserProfile(params.username).then(res => {
+        user = res
+        console.log(user)
     })
 </script>
 
-<Authenticated>
-
-    <div>
+<h1>User Profile</h1>
+<!--    <div>
         <h1>{user.displayName}</h1>
         <input type="checkbox" />
 
@@ -30,5 +26,12 @@
             <button>UnFollow</button>
         {/if}
 
-    </div>
-</Authenticated>
+    </div>-->
+
+{#await promise}
+    <DefaultSpinner />
+{:then user}
+    <h1>{user.displayName}</h1>
+{:catch error}
+    <p style="color: red">{error.message}</p>
+{/await}
