@@ -15,7 +15,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "husky": "^4.2.5",
     "integrify": "^3.0.1",
-    "prettier": "^2.0.5",
+    "prettier": "^1.19.1",
     "prettier-plugin-svelte": "^0.7.0",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
