@@ -1,21 +1,13 @@
 <script>
     import { get } from "../api"
 
-    import User from "../components/User.svelte"
-    import { onMount } from "svelte"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
+    import UserMini from "../components/UserMini.svelte"
 
     let users
 
-    /*    onMount(() => {
-        get("listUsers").then(res => {
-            users = res
-            console.log(users)
-        })
-    })*/
-
     let promise = get("listUsers").then(res => {
-        users = res
+        return res
         console.log(users)
     })
 </script>
@@ -25,10 +17,10 @@
 
     {#await promise}
         <DefaultSpinner />
-    {:then user}
+    {:then users}
         {#if users}
             {#each users as user}
-                <User {user} />
+                <UserMini {user} />
             {/each}
         {:else}
             <p>No users yet!</p>
