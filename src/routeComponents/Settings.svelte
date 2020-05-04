@@ -1,18 +1,22 @@
 <script>
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { siteBaseURL } from "../../sharedCode/constants"
+
     import {
         authUserStore,
         updateUserEmail,
         updateUserPassword,
-        updateUserCustomSettings,
-        updateUserUsername
+        updateUserUsername,
     } from "../stores/userStore"
     import Authenticated from "./Authenticated.svelte"
+    import PersonalData from "../components/PersonalData.svelte"
 
     //since this is in the authenticated HOC $authUserStore is guaranteed to be there
     let storeClone = { ...$authUserStore }
+
+    let userSettings
+    let personalDataClone // for comparing changes
+
     let password = ""
     let confirmPassword = ""
 
@@ -22,18 +26,17 @@
     let pendingApiCall2 = false
     let showSuccessMessage3 = false
     let pendingApiCall3 = false
-    let showSuccessMessage4 = false
-    let pendingApiCall4 = false
+
 
     function submit1(event) {
         if (storeClone.email !== $authUserStore.email) {
             pendingApiCall1 = true
             updateUserEmail(storeClone.email)
-                .then(newUser => {
+                .then((newUser) => {
                     showSuccessMessage1 = true
                     pendingApiCall1 = false
                 })
-                .catch(e => {
+                .catch((e) => {
                     pendingApiCall1 = false
                 })
         } else {
@@ -45,11 +48,11 @@
         if (password === confirmPassword) {
             pendingApiCall2 = true
             updateUserPassword(password)
-                .then(newUser => {
+                .then((newUser) => {
                     showSuccessMessage2 = true
                     pendingApiCall2 = false
                 })
-                .catch(e => {
+                .catch((e) => {
                     pendingApiCall2 = false
                 })
         } else {
@@ -57,40 +60,21 @@
         }
     }
 
-    function submit3(event) {
-        pendingApiCall3 = true
-        updateUserCustomSettings(storeClone.displayName)
-            .then(() => {
-                showSuccessMessage3 = true
-                pendingApiCall3 = false
-            })
-            .catch(e => {
-                pendingApiCall3 = false
-                console.log(e)
-                alert(e.message)
-            })
-    }
-    function submit4(event) {
-        pendingApiCall4 = true
-        updateUserUsername(storeClone.username)
-            .then(() => {
-                showSuccessMessage4 = true
-                pendingApiCall4 = false
-            })
-            .catch(e => {
-                pendingApiCall4 = false
-                console.log(e)
-                alert(e.message)
-            })
-    }
+
 </script>
 
 <Authenticated>
 
     <div>
+
+        <PersonalData />
+
+
+
+        <hr />
         <h1>Security Settings / Danger Zone</h1>
-        <form on:submit|preventDefault={submit1}>
-            <input type="email" required placeholder="Email" bind:value={storeClone.email} />
+        <form on:submit|preventDefault="{submit1}">
+            <input type="email" required placeholder="Email" bind:value="{storeClone.email}" />
             <br />
 
             <button>Update Email</button>
@@ -99,19 +83,18 @@
             {/if}
         </form>
         {#if showSuccessMessage1}
-            <!--todo this coudl change depending onthe backend-->
             <p>Your Email has been updated.</p>
         {/if}
         <br />
-        <form on:submit|preventDefault={submit2}>
-            <input type="password" required placeholder="New password" bind:value={password} />
+        <form on:submit|preventDefault="{submit2}">
+            <input type="password" required placeholder="New password" bind:value="{password}" />
             <br />
             <input
                 id="password-confirm"
                 type="password"
                 required
                 placeholder="Confirm new password"
-                bind:value={confirmPassword} />
+                bind:value="{confirmPassword}" />
             <br />
             <button>Update Password</button>
             {#if pendingApiCall2}
@@ -119,36 +102,7 @@
             {/if}
         </form>
         {#if showSuccessMessage2}
-            <!--todo this could change depending onthe backend-->
             <p>Your Password has been updated.</p>
-        {/if}
-
-        <form on:submit|preventDefault={submit4}>
-
-            <input required placeholder="Username" bind:value={storeClone.username} />
-            <br />
-            {#if storeClone.username}
-                <p>Your profile url will be at {`${siteBaseURL}${storeClone.username}`}</p>
-            {/if}
-            <button>Update Username</button>
-            {#if pendingApiCall4}
-                <DefaultSpinner />
-            {/if}
-        </form>
-        <hr />
-
-        <h1>Personal Settings</h1>
-        <form on:submit|preventDefault={submit3}>
-            <input required placeholder="Display Name" bind:value={storeClone.displayName} />
-            <br />
-
-            <button>Update Personal Settings</button>
-            {#if pendingApiCall3}
-                <DefaultSpinner />
-            {/if}
-        </form>
-        {#if showSuccessMessage3}
-            <p>Your Custom Settings have been updated.</p>
         {/if}
 
     </div>

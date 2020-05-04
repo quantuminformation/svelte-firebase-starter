@@ -1,5 +1,5 @@
 <script>
-    import User from "../components/User.svelte"
+    import User from "../components/UserMini.svelte"
     import { getUserProfile } from "../stores/userStore"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
 
@@ -7,9 +7,13 @@
     export let isFollowing
     export let username
 
-    const follow = uid => {}
+    import queryString from "query-string"
 
-    let promise = getUserProfile(params.username).then(res => {
+    let queryParams = queryString.parse(location.search)
+    console.log(queryParams)
+    const follow = (uid) => {}
+
+    let promise = getUserProfile(queryParams.username).then((res) => {
         user = res
         console.log(user)
     })

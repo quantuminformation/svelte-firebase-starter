@@ -19,7 +19,7 @@ var firebaseConfig = {
     storageBucket: "svelte-fullstack-starter.appspot.com",
     messagingSenderId: "684795141693",
     appId: "1:684795141693:web:bb22a3283361cfc381d454",
-    measurementId: "G-Y1SRV3FGND"
+    measurementId: "G-Y1SRV3FGND",
 }
 // Initialize Firebase
 //firebase.initializeApp(firebaseConfig);
@@ -34,7 +34,7 @@ function getCurrentUser() {
         if (userLoaded) {
             resolve(firebase.auth().currentUser)
         }
-        const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
             userLoaded = true
             unsubscribe()
             resolve(user)
@@ -57,11 +57,16 @@ export async function logout() {
             //change the store after nav to avoid template errors needing to read email
             authUserStore.update(() => null) //this will cause a redirect
         })
-        .catch(e => {
+        .catch((e) => {
             alert(e.message)
         })
 }
 
+/**
+ * Updates the email in the firebase Authentication table
+ * @param email
+ * @returns {Promise<void>}
+ */
 export async function updateUserEmail(email) {
     try {
         // let updatedUser = if need access
@@ -72,6 +77,11 @@ export async function updateUserEmail(email) {
     }
 }
 
+/**
+ * Updates the password used with firebase basic authentication
+ * @param password
+ * @returns {Promise<void>}
+ */
 export async function updateUserPassword(password) {
     try {
         await firebase.auth().currentUser.updatePassword(password)
@@ -81,26 +91,16 @@ export async function updateUserPassword(password) {
     }
 }
 
-export async function updateUserCustomSettings(displayName) {
-    try {
-        await firebase.auth().currentUser.updateProfile({ displayName: displayName })
-        authUserStore.update(user => {
-            return { ...user, displayName: displayName }
-        })
-    } catch (e) {
-        alert(e.message)
-    }
-}
 export async function updateUserUsername(username) {
     try {
         await firebase
             .database()
             .ref("users/" + firebase.auth().currentUser.uid)
-            .set({
-                username: username
+            .update({
+                username: username,
             })
 
-        authUserStore.update(user => {
+        authUserStore.update((user) => {
             return { ...user, username: username }
         })
     } catch (e) {
@@ -108,6 +108,35 @@ export async function updateUserUsername(username) {
     }
 }
 
+/**
+ * updates Custom data in the realtime datastore users object, except for the username
+ * @param data
+ * @returns {Promise<void>}
+ */
+export async function updatePersonalData(data) {
+    const { displayName } = data
+    try {
+        await firebase
+            .database()
+            .ref("users/" + firebase.auth().currentUser.uid)
+            .update({
+                displayName: displayName,
+            })
+
+        authUserStore.update((user) => {
+            return { ...user, displayName: displayName }
+        })
+    } catch (e) {
+        alert(e.message)
+    }
+}
+
+/**
+ * Signs in to firebase using basic authentication
+ * @param email
+ * @param password
+ * @returns {Promise<void>}
+ */
 export async function signin(email, password) {
     try {
         let { user } = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
@@ -125,11 +154,18 @@ export async function signin(email, password) {
     }
 }
 
-export async function register(email, password, username, displayName) {
+/**
+ * Create an account on firebase which will not be using a 3rd party auth provider
+ * @param email
+ * @param password
+ * @param username
+ * @param displayName
+ * @returns {Promise<void>}
+ */
+export async function register(email, password, username) {
     try {
         let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
         const { user } = userCredential
-        await user.updateProfile({ displayName: displayName })
         await firebase
             .database()
             .ref("users/" + user.uid)
@@ -155,12 +191,15 @@ export async function backendInit() {
         throw e.message
     }
 }
-export async function getUserProfile(uid) {
+export async function getUserProfile() {
     try {
-        let user = await firebase
+        let query = await firebase
             .database()
-            .ref("users/" + uid)
+            .ref("users/" + firebase.auth().currentUser.uid)
             .once("value")
+
+        const user = query.val()
+        console.log(user)
         return user
     } catch (e) {
         throw e.message
