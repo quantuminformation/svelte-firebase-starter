@@ -49,7 +49,7 @@
         {:else}
             <a href="/profile" use:link>profile</a>
             <a href="/settings" use:link>Settings</a>
-            <button on:click={logout}>Logout</button>
+            <button on:click="{logout}">Logout</button>
         {/if}
         <a href="/users" use:link>Users</a>
 
@@ -57,14 +57,14 @@
 
         <div>
 
-            <Route path="register" component={Register} />
-            <Route path="recover" component={Recover} />
-            <Route path="signin" component={Signin} />
-            <Route path="settings" component={Settings} />
-            <Route path="users" component={Users} />
-            <Route path="profile/:username" component={Profile} />
-            <Route path="profile" component={Profile} />
-            <Route path="/" component={Home} />
+            <Route path="register" component="{Register}" />
+            <Route path="recover" component="{Recover}" />
+            <Route path="signin" component="{Signin}" />
+            <Route path="settings" component="{Settings}" />
+            <Route path="users" component="{Users}" />
+            <Route path=":username" component="{Profile}" />
+
+            <Route path="/" component="{Home}" />
         </div>
     </div>
 </Router>
