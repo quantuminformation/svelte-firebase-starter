@@ -5,7 +5,7 @@
 
     export let user
     export let isFollowing
-    export let username
+    export let username // comes from the route
 
     import queryString from "query-string"
 
@@ -13,7 +13,7 @@
     console.log(queryParams)
     const follow = (uid) => {}
 
-    let promise = getUserProfile(queryParams.username).then((res) => {
+    let promise = getUserProfile(username).then((res) => {
         user = res
         console.log(user)
     })

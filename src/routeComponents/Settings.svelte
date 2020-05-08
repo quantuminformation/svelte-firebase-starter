@@ -27,7 +27,6 @@
     let showSuccessMessage3 = false
     let pendingApiCall3 = false
 
-
     function submit1(event) {
         if (storeClone.email !== $authUserStore.email) {
             pendingApiCall1 = true
@@ -59,8 +58,6 @@
             alert("Your passwords do not match")
         }
     }
-
-
 </script>
 
 <Authenticated>
@@ -68,8 +65,6 @@
     <div>
 
         <PersonalData />
-
-
 
         <hr />
         <h1>Security Settings / Danger Zone</h1>
