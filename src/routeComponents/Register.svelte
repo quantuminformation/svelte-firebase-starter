@@ -2,9 +2,9 @@
     import { register } from "../stores/userStore"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { authUserStore } from "../stores/userStore"
+    import { authUserStore, isUsernameFree } from "../stores/userStore"
     import { siteBaseURL } from "../../sharedCode/constants"
-   // import { profileURL } from "../../sharedCode/utils"
+    // import { profileURL } from "../../sharedCode/utils"
 
     if ($authUserStore) {
         navigate("/", { replace: true })
@@ -13,21 +13,43 @@
     let password = ""
     let email = ""
     let displayName = ""
+
     let username = ""
+    let usernameDirty = false
+    let usernameCheckPending = false
+    let usernameIsFree = false
 
     let showSuccessMessage = false
     let pendingApiCall = false
 
+    let isUsernameFreeR = false
+
     export function submit(event) {
         pendingApiCall = true
-        register(email, password,username, displayName)
-            .then(newUser => {
+        register(email, password, username, displayName)
+            .then((newUser) => {
                 showSuccessMessage = true
                 pendingApiCall = false
             })
-            .catch(e => {
+            .catch((e) => {
                 pendingApiCall = false
             })
+    }
+
+    const handler = async () => {
+        if (!username) {
+            usernameDirty = false
+            return
+        }
+        usernameCheckPending = true
+        usernameDirty = true
+        let usernameResult = await isUsernameFree(username)
+        usernameCheckPending = false
+        if (usernameResult) {
+            usernameIsFree = false
+        } else {
+            usernameIsFree = true
+        }
     }
 </script>
 
@@ -36,19 +58,28 @@
     <div>
         <h1>Register</h1>
         <h2>Account Settings</h2>
-        <form on:submit|preventDefault={submit}>
-            <input type="email" required placeholder="Email" bind:value={email} />
-            <input type="password" required placeholder="Your password" bind:value={password} />
+        <form on:submit|preventDefault="{submit}">
+            <input type="email" required placeholder="Email" bind:value="{email}" />
+            <input type="password" required placeholder="Your password" bind:value="{password}" />
 
             <br />
-            <input required placeholder="Username" bind:value={username} />
+            <input required placeholder="Username" bind:value="{username}" on:blur="{handler}" />
+            {#if usernameDirty}
+                {#if usernameCheckPending}
+                    <DefaultSpinner />
+                {:else if usernameIsFree}
+                    <span>✅</span>
+                {:else}
+                    <span>❌</span>
+                {/if}
+            {/if}
             <br />
             {#if username}
                 <p>Your profile url will be at {`${siteBaseURL}${username}`}</p>
             {/if}
-            <hr>
-        <h2>Personal settings</h2>
-            <input required placeholder="Display Name" bind:value={displayName} />
+            <hr />
+            <h2>Personal settings</h2>
+            <input required placeholder="Display Name" bind:value="{displayName}" />
 
             <button>Register</button>
             {#if pendingApiCall}

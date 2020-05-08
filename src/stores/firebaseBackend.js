@@ -154,6 +154,23 @@ export async function signin(email, password) {
     }
 }
 
+
+export async function isUsernameFree(username) {
+
+    try {
+        let query = await firebase
+            .database()
+            .ref(`usernames/${username}`)
+            .once("value")
+
+        return query.val()
+    } catch (e) {
+        throw e.message
+    }
+
+
+}
+
 /**
  * Create an account on firebase which will not be using a 3rd party auth provider
  * @param email
@@ -168,8 +185,8 @@ export async function register(email, password, username) {
         const { user } = userCredential
         await firebase
             .database()
-            .ref("users/" + user.uid)
-            .set({ username: username })
+            .ref("usernames/" + username)
+            .set({ uid:  user.uid })
 
         userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)
