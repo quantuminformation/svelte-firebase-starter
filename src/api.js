@@ -1,4 +1,7 @@
-const base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
+//const base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
+
+// use this for emulation
+const base = "https://localhost:"
 
 function send({ method, path, data, token }) {
     const opts = { method, headers: {} }

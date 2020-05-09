@@ -1,17 +1,10 @@
 {
-  "database": {
-    "rules": "./firebase_specific/database.rules.json"
-  },
-  "firestore": {
-    "rules": "./firebase_specific/firestore.rules",
-    "indexes": "./firebase_specific/firestore.indexes.json"
-  },
+
   "functions": {
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
-    ],
-    "source": "firebase_specific/functions"
+    ]
   },
   "hosting": {
     "public": "public",
@@ -26,9 +19,6 @@
         "destination": "/index.html"
       }
     ]
-  },
-  "storage": {
-    "rules": "./firebase_specific/storage.rules"
   },
   "emulators": {
     "functions": {

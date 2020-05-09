@@ -15,3 +15,8 @@ dist
 
 .DS_Store
 public/build
+
+firebase-debug.log
+database-debug.log
+*/package-lock.json
+
