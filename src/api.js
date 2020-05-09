@@ -1,7 +1,7 @@
-//const base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
+const base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
 
-// use this for emulation
-const base = "https://localhost:"
+// use this when running firebase funcitons emulation
+//const base = "https://localhost:5002"
 
 function send({ method, path, data, token }) {
     const opts = { method, headers: {} }
@@ -16,8 +16,8 @@ function send({ method, path, data, token }) {
     }
 
     return fetch(`${base}/${path}`, opts)
-        .then(r => r.text())
-        .then(json => {
+        .then((r) => r.text())
+        .then((json) => {
             try {
                 return JSON.parse(json)
             } catch (err) {
