@@ -1,5 +1,5 @@
 import App from "./App.svelte"
-import { backendInit } from "./stores/userStore"
+import { backendInit } from "./firebaseBackend"
 
 function getapp() {
     return new App({

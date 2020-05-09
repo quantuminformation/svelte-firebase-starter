@@ -7,7 +7,7 @@
     import Settings from "./routeComponents/Settings.svelte"
     import Home from "./routeComponents/Home.svelte"
     import Profile from "./routeComponents/Profile.svelte"
-    import { authUserStore, logout } from "./stores/userStore"
+    import { authUserStore, logout } from "./firebaseBackend"
 
     console.log($authUserStore)
 </script>

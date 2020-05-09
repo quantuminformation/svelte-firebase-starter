@@ -1,6 +1,6 @@
 <script>
     import User from "../components/UserMini.svelte"
-    import { getUserProfile } from "../stores/userStore"
+    import { getUserProfile } from "../firebaseBackend"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
 
     export let user

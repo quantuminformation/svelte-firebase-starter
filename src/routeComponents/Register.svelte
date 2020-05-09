@@ -1,8 +1,8 @@
 <script>
-    import { register } from "../stores/userStore"
+    import { register } from "../firebaseBackend"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { authUserStore, isUsernameFree } from "../stores/userStore"
+    import { authUserStore, isUsernameFree } from "../firebaseBackend"
     import { siteBaseURL } from "../../sharedCode/constants"
     // import { profileURL } from "../../sharedCode/utils"
 

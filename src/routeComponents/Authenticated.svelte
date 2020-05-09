@@ -1,7 +1,7 @@
 <script>
     import { navigate } from "svelte-routing"
 
-    import { authUserStore } from "../stores/userStore"
+    import { authUserStore } from "../firebaseBackend"
 
     $: if (!$authUserStore) {
         navigate("/", { replace: true })

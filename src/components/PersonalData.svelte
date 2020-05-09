@@ -1,53 +1,52 @@
 <script>
     import DefaultSpinner from "./DefaultSpinner.svelte"
 
-    import { getUserProfile,updatePersonalData,        updateUserUsername,
-    } from "../stores/userStore"
+    import { getUserProfile, updatePersonalData, updateUserUsername } from "../firebaseBackend"
     import { siteBaseURL } from "../../sharedCode/constants"
 
     let personalDataClone // for comparing changes
     let personalData
-let pendingApiCall
+    let pendingApiCall
     let showSuccessMessage
     let showSuccessMessage2 = false
     let pendingApiCall2 = false
 
     let personalDataPromise = async () => {
         try {
-             personalData = await getUserProfile()
-            personalDataClone = {...personalData}
+            personalData = await getUserProfile()
+            personalDataClone = { ...personalData }
             return personalData
         } catch (e) {
             console.log(e)
         }
     }
 
-    function submitPersonalSettings (event) {
+    function submitPersonalSettings(event) {
         pendingApiCall = true
         updatePersonalData(personalDataClone)
-                .then(() => {
-                    showSuccessMessage = true
-                    pendingApiCall = false
-                })
-                .catch(e => {
-                    pendingApiCall = false
-                    console.log(e)
-                    alert(e.message)
-                })
+            .then(() => {
+                showSuccessMessage = true
+                pendingApiCall = false
+            })
+            .catch((e) => {
+                pendingApiCall = false
+                console.log(e)
+                alert(e.message)
+            })
     }
 
     function submitUsername(event) {
         pendingApiCall2 = true
         updateUserUsername(personalDataClone.username)
-                .then(() => {
-                    showSuccessMessage2 = true
-                    pendingApiCall2 = false
-                })
-                .catch((e) => {
-                    pendingApiCall2 = false
-                    console.log(e)
-                    alert(e.message)
-                })
+            .then(() => {
+                showSuccessMessage2 = true
+                pendingApiCall2 = false
+            })
+            .catch((e) => {
+                pendingApiCall2 = false
+                console.log(e)
+                alert(e.message)
+            })
     }
 </script>
 
@@ -56,8 +55,8 @@ let pendingApiCall
     <DefaultSpinner />
 {:then personalData}
 
-    <form on:submit|preventDefault={submitPersonalSettings}>
-        <input required placeholder="Display Name" bind:value={personalDataClone.displayName }  />
+    <form on:submit|preventDefault="{submitPersonalSettings}">
+        <input required placeholder="Display Name" bind:value="{personalDataClone.displayName}" />
         <br />
 
         <button>Update Personal Settings</button>

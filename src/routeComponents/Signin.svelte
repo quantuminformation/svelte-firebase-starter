@@ -1,8 +1,8 @@
 <script>
-    import { signin } from "../stores/userStore"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate, link } from "svelte-routing"
-    import { authUserStore } from "../stores/userStore"
+    import { signin} from "../firebaseBackend"
+
 
     if ($authUserStore) {
         navigate("/", { replace: true })

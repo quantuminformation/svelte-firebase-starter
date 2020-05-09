@@ -6,8 +6,8 @@ import * as firebaseOriginal from "firebase/app"
 let firebase = firebaseOriginal.default
 import "firebase/auth"
 import "firebase/database"
-import { userFromFireBase } from "../model/User"
-import { post } from "../api"
+import { userFromFireBase } from "./model/User"
+import { post } from "./api"
 //import "firebase/analytics";
 
 //import firebase from "firebase";
@@ -178,10 +178,6 @@ export async function register(email, password, username) {
         let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
         const { user } = userCredential
         post("upsertUsername", { username: username, uid: user.id })
-        await firebase
-            .database()
-            .ref("usernames/" + username)
-            .set({ uid: user.uid })
 
         userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)

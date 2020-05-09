@@ -1,8 +1,7 @@
 <script>
-    import { requestPasswordRecovery } from "../stores/userStore"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { authUserStore } from "../stores/userStore"
+    import { authUserStore,requestPasswordRecovery } from "../firebaseBackend"
 
     if ($authUserStore) {
         navigate("/", { replace: true })

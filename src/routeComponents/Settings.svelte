@@ -7,7 +7,7 @@
         updateUserEmail,
         updateUserPassword,
         updateUserUsername,
-    } from "../stores/userStore"
+    } from "../firebaseBackend"
     import Authenticated from "./Authenticated.svelte"
     import PersonalData from "../components/PersonalData.svelte"
 
