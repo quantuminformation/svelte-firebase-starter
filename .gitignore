@@ -18,5 +18,6 @@ public/build
 
 firebase-debug.log
 database-debug.log
+pubsub-debug.log
 */package-lock.json
 
