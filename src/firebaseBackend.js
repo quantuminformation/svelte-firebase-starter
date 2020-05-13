@@ -177,7 +177,7 @@ export async function register(email, password, username) {
     try {
         let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
         const { user } = userCredential
-        post("upsertUsername", { username: username, uid: user.id })
+        post("upsertUsername", { username: username, uid: user.uid })
 
         userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)

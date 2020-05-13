@@ -35,7 +35,7 @@
 </style>
 
 <Router>
-    <h1>Svetle Fullstack Starter</h1>
+    <h1>Svetle Firebase Starter</h1>
     {#if $authUserStore}
         <p>Logged in as {$authUserStore.displayName || $authUserStore.email}</p>
     {:else}
