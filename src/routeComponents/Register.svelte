@@ -87,7 +87,7 @@
             {/if}
         </form>
         {#if showSuccessMessage}
-            <p>Please check your email to verify and then login</p>
+            <p>Well done! Your new account has been successfully created 🌱 Please check your email to verify your email and then you will be able to login.</p>
         {/if}
 
     </div>

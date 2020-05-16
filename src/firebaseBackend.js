@@ -181,6 +181,7 @@ export async function register(email, password, username) {
 
         userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)
+        return userCredential
     } catch (e) {
         alert(e.message)
         throw e.message
