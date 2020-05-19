@@ -1,5 +1,5 @@
 <script>
-    import Spinner from "svelte-spinner"
+    import { Circle2 } from 'svelte-loading-spinners'
 </script>
 
 <style>
@@ -8,4 +8,4 @@
     }
 </style>
 
-<Spinner size="50" speed="750" color="blue" thickness="2" gap="40" />
+<Circle2 size="35" color="orange" />
