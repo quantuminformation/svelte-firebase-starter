@@ -4,10 +4,6 @@ export function userFromFireBase(serverUser) {
     return getUser(serverUser)
 }
 
-export function userFromNetlify(serverUser) {
-    return getUser(serverUser)
-}
-
 function getUser(user) {
     return { email: user.email}
 }

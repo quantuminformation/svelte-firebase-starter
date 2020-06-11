@@ -25,6 +25,9 @@
     let isUsernameFreeR = false
 
     export function submit(event) {
+        if (!usernameIsFree) {
+            alert("Your username is not available, please try another")
+        }
         pendingApiCall = true
         register(email, password, username, displayName)
             .then((newUser) => {
@@ -63,14 +66,20 @@
             <input type="password" required placeholder="Your password" bind:value="{password}" />
 
             <br />
-            <input required placeholder="Username" bind:value="{username}" on:blur="{handler}" />
+            <div>
+                <input
+                    required
+                    placeholder="Username"
+                    bind:value="{username}"
+                    on:keyup="{handler}" />
+            </div>
             {#if usernameDirty}
                 {#if usernameCheckPending}
                     <DefaultSpinner />
                 {:else if usernameIsFree}
-                    <span>✅</span>
+                    <span>✅ Username is available</span>
                 {:else}
-                    <span>❌</span>
+                    <span>❌ Username {username} is not available.</span>
                 {/if}
             {/if}
             <br />
@@ -80,14 +89,17 @@
             <hr />
             <h2>Personal settings</h2>
             <input required placeholder="Display Name" bind:value="{displayName}" />
+            <button>Create Account</button>
 
-            <button>Register</button>
-            {#if pendingApiCall}
+            <!--     {#if pendingApiCall}
                 <DefaultSpinner />
-            {/if}
+            {/if}-->
         </form>
         {#if showSuccessMessage}
-            <p>Well done! Your new account has been successfully created 🌱 Please check your email to verify your email and then you will be able to login.</p>
+            <p>
+                Well done! Your new account has been successfully created 🌱 Please check your email
+                to verify your email and then you will be able to login.
+            </p>
         {/if}
 
     </div>

@@ -157,7 +157,7 @@ export async function signin(email, password) {
 
 export async function isUsernameFree(username) {
     try {
-        let query = await firebase.database().ref(`usernames/${username}`).once("value")
+        let query = await firebase.database().ref(`users/${username}`).once("value")
 
         return query.val()
     } catch (e) {
@@ -181,6 +181,9 @@ export async function register(email, password, username) {
 
         userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)
+
+        await updatePersonalData({ username: username })
+
         return userCredential
     } catch (e) {
         alert(e.message)
@@ -192,10 +195,16 @@ export function requestPasswordRecovery(email) {
     return firebase.auth().sendPasswordResetEmail(email)
 }
 
+/**
+ * Get a user stored locally and then get the required data added to the store
+ * @returns {Promise<void>}
+ */
 export async function backendInit() {
     try {
         let user = await getCurrentUser()
-        user && authUserStore.update(() => userFromFireBase(user))
+        if (user) {
+            authUserStore.update(() => userFromFireBase(user))
+        }
     } catch (e) {
         throw e.message
     }

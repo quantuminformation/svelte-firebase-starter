@@ -7,10 +7,8 @@
     export let isFollowing
     export let username // comes from the route
 
-    import queryString from "query-string"
 
-    let queryParams = queryString.parse(location.search)
-    console.log(queryParams)
+    console.log(username)
     const follow = (uid) => {}
 
     let promise = getUserProfile(username).then((res) => {

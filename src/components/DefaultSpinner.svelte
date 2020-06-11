@@ -1,5 +1,5 @@
 <script>
-    import { Circle2 } from 'svelte-loading-spinners'
+    import { Circle2 } from "svelte-loading-spinners"
 </script>
 
 <style>
@@ -8,4 +8,4 @@
     }
 </style>
 
-<Circle2 size="35" color="orange" />
+<Circle2   color="#003E00"  />
