@@ -10,6 +10,7 @@
     } from "../firebaseBackend"
     import Authenticated from "./Authenticated.svelte"
     import PersonalData from "../components/PersonalData.svelte"
+    import Username from "../components/Username.svelte"
 
     //since this is in the authenticated HOC $authUserStore is guaranteed to be there
     let storeClone = { ...$authUserStore }

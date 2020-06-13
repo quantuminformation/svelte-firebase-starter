@@ -25,7 +25,14 @@ const totalUsers: any = []
     }
 }*/
 
-// thx to
+/**
+ * Several steps here
+ * 1 Get a list of registered users and strip them
+ * 2 Create a list of queries with the uid's of the registered users to get data from the users object in the realtime DB
+ * 3 Combine the uid from the registration DB with the custom data
+ * 4 remove users with no username set (incomplete profile)
+ * @param amount
+ */
 export async function getSomeUsers(amount: number) {
     try {
         /** Cached reference to '/users' in the database. */
@@ -33,7 +40,7 @@ export async function getSomeUsers(amount: number) {
         /** An array of {uid, displayName} objects for each existing user */
         const strippedUserRecords = await getStrippedUserRecords(amount)
         /** An array of Promises that resolve with a user's username */
-        const usernamePromises = strippedUserRecords.map(user => {
+        const usernamePromises = strippedUserRecords.map((user) => {
             return allUsersRef
                 .child(user.uid)
                 .child("username")
@@ -42,14 +49,14 @@ export async function getSomeUsers(amount: number) {
         })
         // When all the usernames have been fetched, iterate each one and combine them with the relevant user record
         /** An array of filtered user data objects for each existing user */
-        const parsedUsers = await Promise.all(usernamePromises).then(usernameArray => {
+        const parsedUsers = await Promise.all(usernamePromises).then((usernameArray) => {
             // combine each username with the relevant user record
             return usernameArray.map((username, i) => {
                 const userRecord = strippedUserRecords[i]
                 return { ...userRecord, username }
             })
         })
-        return parsedUsers
+        return parsedUsers.filter((user) => user.username)
     } catch (error) {
         console.error("Error listing users:", error)
         throw new Error("Error listing users: " + error) // or just rethrow error?
@@ -58,10 +65,10 @@ export async function getSomeUsers(amount: number) {
 /**
  * Memory-friendly function to retrieve only select fields of a user's UserRecord
  */
-const getStrippedUserRecords = async function(amount: number) {
+const getStrippedUserRecords = async function (amount: number) {
     const response = await admin.auth().listUsers(amount)
-    return response.users.map(user => {
-        return { uid: user.uid, displayName: user.displayName }
+    return response.users.map((user) => {
+        return { uid: user.uid }
     })
     // original response should be now marked for disposal from memory
 }
