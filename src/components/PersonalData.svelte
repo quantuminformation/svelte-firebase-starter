@@ -8,8 +8,6 @@
     let personalData
     let pendingApiCall
     let showSuccessMessage
-    let showSuccessMessage2 = false
-    let pendingApiCall2 = false
 
     let personalDataPromise = async () => {
         try {
@@ -35,19 +33,6 @@
             })
     }
 
-    function submitUsername(event) {
-        pendingApiCall2 = true
-        updateUserUsername(personalDataClone.username)
-            .then(() => {
-                showSuccessMessage2 = true
-                pendingApiCall2 = false
-            })
-            .catch((e) => {
-                pendingApiCall2 = false
-                console.log(e)
-                alert(e.message)
-            })
-    }
 </script>
 
 <h1>Personal Settings</h1>
@@ -67,21 +52,6 @@
     {#if showSuccessMessage}
         <p>Your Personal Data Settings have been updated.</p>
     {/if}
-    <form on:submit|preventDefault="{submitUsername}">
-
-        <input required placeholder="Username" bind:value="{personalDataClone.username}" />
-        <br />
-        {#if personalDataClone.username}
-            <p>Your profile url will be at {`${siteBaseURL}${personalDataClone.username}`}</p>
-        {/if}
-        <button>Update Username</button>
-        {#if pendingApiCall2}
-            <DefaultSpinner />
-        {/if}
-        {#if showSuccessMessage2}
-            <p>Your Username has been updated.</p>
-        {/if}
-    </form>
 {:catch error}
     <p style="color: red">{error.message}</p>
 {/await}

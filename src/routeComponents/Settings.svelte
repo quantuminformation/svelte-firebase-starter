@@ -65,6 +65,7 @@
     <div>
 
         <PersonalData />
+        <Username />
 
         <hr />
         <h1>Security Settings / Danger Zone</h1>

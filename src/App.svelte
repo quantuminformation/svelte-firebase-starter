@@ -9,7 +9,7 @@
     import Profile from "./routeComponents/Profile.svelte"
     import { authUserStore, logout } from "./firebaseBackend"
 
-    console.log(`auth users on load `+$authUserStore)
+    console.log(`auth users on load ` + $authUserStore)
 </script>
 
 <style>
@@ -36,7 +36,9 @@
 
 <Router>
     <h1>Svetle Firebase Starter</h1>
+<!--
     {@debug $authUserStore}
+-->
     {#if $authUserStore}
         <p>Logged in as {$authUserStore.displayName || $authUserStore.email}</p>
     {:else}
@@ -48,7 +50,7 @@
             <a href="/register" use:link>Register</a>
             <a href="/signin" use:link>Signin</a>
         {:else}
-            <a href=`/${$authUserStore.username}` use:link>Profile</a>
+            <a href="${`/$authUserStore.username`}" use:link>Profile</a>
 
             <a href="/settings" use:link>Settings</a>
             <button on:click="{logout}">Logout</button>

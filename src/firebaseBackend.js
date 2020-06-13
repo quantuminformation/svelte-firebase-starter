@@ -173,17 +173,12 @@ export async function isUsernameFree(username) {
  * @param displayName
  * @returns {Promise<void>}
  */
-export async function register(email, password, username) {
+export async function register(email, password) {
     try {
         let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password)
         const { user } = userCredential
-        post("upsertUsername", { username: username, uid: user.uid })
-
-        userCredential.user.sendEmailVerification()
+        await userCredential.user.sendEmailVerification()
         console.log("registered " + userCredential)
-
-        await updatePersonalData({ username: username })
-
         return userCredential
     } catch (e) {
         alert(e.message)
@@ -197,12 +192,13 @@ export function requestPasswordRecovery(email) {
 
 /**
  * Get a user stored locally and then get the required data added to the store
+ * We check emailVerified as they also exist on the local storage even if they haven't verified and we don't want to show logged UI
  * @returns {Promise<void>}
  */
 export async function backendInit() {
     try {
         let user = await getCurrentUser()
-        if (user) {
+        if (user && user.emailVerified) {
             authUserStore.update(() => userFromFireBase(user))
         }
     } catch (e) {
