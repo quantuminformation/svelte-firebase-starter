@@ -1,31 +1,32 @@
 {
-  "name": "functions",
-  "scripts": {
-    "lint": "tslint --project tsconfig.json",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "serve": "npm run build && firebase serve --only functions",
-    "shell": "npm run build && firebase functions:shell -p 5001",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
-  },
-  "engines": {
-    "node": "10"
-  },
-  "main": "lib/index.js",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "firebase-admin": "^8.12.1",
-    "firebase-functions": "^3.6.1"
-  },
-  "devDependencies": {
-    "@google-cloud/functions-framework": "^1.5.1",
-    "firebase-functions-test": "^0.2.1",
-    "mocha": "^8.0.1",
-    "tslint": "^6.1.2",
-    "typescript": "^3.8.3"
-  },
-  "private": true
+    "name": "functions",
+    "scripts": {
+        "lint": "tslint --project tsconfig.json",
+        "build": "tsc",
+        "watch": "tsc -w",
+        "serve": "npm run build && firebase serve --only functions",
+        "shell": "npm run build && firebase functions:shell -p 5001",
+        "start": "npm run shell",
+        "deploy": "firebase deploy --only functions",
+        "logs": "firebase functions:log",
+        "test": "mocha --reporter spec"
+    },
+    "engines": {
+        "node": "10"
+    },
+    "main": "lib/index.js",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "firebase-admin": "^8.12.1",
+        "firebase-functions": "^3.7.0"
+    },
+    "devDependencies": {
+        "@google-cloud/functions-framework": "^1.6.0",
+        "firebase-functions-test": "^0.2.1",
+        "mocha": "^8.0.1",
+        "tslint": "^6.1.2",
+        "typescript": "^3.9.5"
+    },
+    "private": true
 }
