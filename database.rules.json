@@ -5,6 +5,9 @@
             "$uid": {
                 ".read": "auth != null",
                 ".write": "auth.uid === $uid"
+            },
+            "username": {
+                ".validate": "newData.val() === data.val()"
             }
         }
     }
