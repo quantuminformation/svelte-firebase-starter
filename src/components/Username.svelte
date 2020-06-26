@@ -36,14 +36,14 @@
             })
     }
 
-    const handler = async () => {
-        if (!username) {
+    const onkeyup = async () => {
+        if (!personalDataClone.username) {
             usernameDirty = false
             return
         }
         usernameCheckPending = true
         usernameDirty = true
-        let usernameResult = await isUsernameFree(username)
+        let usernameResult = await isUsernameFree(personalDataClone.username)
         usernameCheckPending = false
         if (usernameResult) {
             usernameIsFree = false
@@ -52,7 +52,8 @@
         }
     }
 </script>
-<hr>
+
+<hr />
 <h1>Username</h1>
 {#await personalDataPromise()}
     <DefaultSpinner />
@@ -60,7 +61,11 @@
     <form on:submit|preventDefault="{submitUsername}">
 
         <div>
-            <input required placeholder="Username" bind:value="{personalDataClone.username}" />
+            <input
+                required
+                placeholder="Username"
+                on:keyup="{onkeyup}"
+                bind:value="{personalDataClone.username}" />
         </div>
         {#if usernameDirty}
             {#if usernameCheckPending}
@@ -68,7 +73,7 @@
             {:else if usernameIsFree}
                 <span>✅ Username is available</span>
             {:else}
-                <span>❌ Username {username} is not available.</span>
+                <span>❌ Username {personalDataClone.username} is not available.</span>
             {/if}
         {/if}
         <br />
