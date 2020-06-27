@@ -54,3 +54,8 @@ npm run build
 
 You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
 
+## Running emulators
+
+Assuming you have firebase emulation for Realtime DB and Cloud functions you can pass this env variable in to run `EMULATION="true" npm run dev`
+
+And your production data will not be touched
