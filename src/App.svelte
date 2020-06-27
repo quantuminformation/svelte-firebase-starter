@@ -7,9 +7,12 @@
     import Settings from "./routeComponents/Settings.svelte"
     import Home from "./routeComponents/Home.svelte"
     import Profile from "./routeComponents/Profile.svelte"
-    import { authUserStore, logout } from "./firebaseBackend"
+    import { logout } from "./firebaseBackend"
+    import { userDataStore } from "./stores/userDataStore"
 
-    console.log(`auth users on load ` + $authUserStore)
+
+
+    console.log(`auth users on load ` + $userDataStore)
     process.env.EMULATION && console.log("Firebase Emulation being used")
 </script>
 
@@ -37,21 +40,21 @@
 
 <Router>
     <h1>Svetle Firebase Starter</h1>
-<!--
-    {@debug $authUserStore}
+    <!--
+    {@debug $userDataStore}
 -->
-    {#if $authUserStore}
-        <p>Logged in as {$authUserStore.displayName || $authUserStore.email}</p>
+    {#if $userDataStore}
+        <p>Logged in as {$userDataStore.displayName || $userDataStore.email}</p>
     {:else}
         <p>Not logged in</p>
     {/if}
     <div>
         <a href="/" use:link>Home</a>
-        {#if !$authUserStore}
+        {#if !$userDataStore}
             <a href="/register" use:link>Register</a>
             <a href="/signin" use:link>Signin</a>
         {:else}
-            <a href="${`/$authUserStore.username`}" use:link>Profile</a>
+            <a href="${`/$userDataStore.username`}" use:link>Profile</a>
 
             <a href="/settings" use:link>Settings</a>
             <button on:click="{logout}">Logout</button>

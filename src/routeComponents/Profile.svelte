@@ -1,6 +1,6 @@
 <script>
     import User from "../components/UserMini.svelte"
-    import { getUserProfile } from "../firebaseBackend"
+    import { getUserDataAndStore } from "../firebaseBackend"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
 
     export let user
@@ -11,7 +11,7 @@
     console.log(username)
     const follow = (uid) => {}
 
-    let promise = getUserProfile(username).then((res) => {
+    let promise = getUserDataAndStore(username).then((res) => {
         user = res
         console.log(user)
     })

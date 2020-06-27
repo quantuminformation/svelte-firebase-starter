@@ -2,13 +2,8 @@
     import { register } from "../firebaseBackend"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { authUserStore } from "../firebaseBackend"
-    import { siteBaseURL } from "../../sharedCode/constants"
-    // import { profileURL } from "../../sharedCode/utils"
-    import { fly } from 'svelte/transition';
 
-
-    if ($authUserStore) {
+    if (userd) {
         navigate("/", { replace: true })
     }
 
@@ -21,7 +16,7 @@
     let isUsernameFreeR = false
 
     export function submit(event) {
-      /*  if (!usernameIsFree) {
+        /*  if (!usernameIsFree) {
             alert("Your username is not available, please try another")
         }*/
         pendingApiCall = true
@@ -34,7 +29,6 @@
                 pendingApiCall = false
             })
     }
-
 </script>
 
 <div>
@@ -47,7 +41,6 @@
             <input type="password" required placeholder="Your password" bind:value="{password}" />
 
             <br />
-
 
             <button>Create Account</button>
 

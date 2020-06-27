@@ -1,7 +1,7 @@
 <script>
     import DefaultSpinner from "./DefaultSpinner.svelte"
 
-    import { getUserProfile, updateUserUsername, isUsernameFree } from "../firebaseBackend"
+    import { getUserDataAndStore, updateUserUsername, isUsernameFree } from "../firebaseBackend"
     import { siteBaseURL } from "../../sharedCode/constants"
 
     let personalDataClone // for comparing changes
@@ -14,7 +14,7 @@
     let usernameIsFree
     let personalDataPromise = async () => {
         try {
-            personalData = await getUserProfile()
+            personalData = await getUserDataAndStore()
             personalDataClone = { ...personalData }
             return personalData
         } catch (e) {
@@ -80,7 +80,7 @@
         {#if personalDataClone.username}
             <p>Your profile url will be at {`${siteBaseURL}${personalDataClone.username}`}</p>
         {/if}
-        <button>Update Username</button>
+        <button disabled={!usernameIsFree}>Update Username</button>
         {#if pendingApiCall}
             <DefaultSpinner />
         {/if}

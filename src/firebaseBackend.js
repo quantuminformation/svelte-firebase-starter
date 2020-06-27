@@ -1,4 +1,3 @@
-import { writable } from "svelte/store"
 import { navigate } from "svelte-routing"
 
 import * as firebaseOriginal from "firebase/app"
@@ -6,7 +5,6 @@ import * as firebaseOriginal from "firebase/app"
 let firebase = firebaseOriginal.default
 import "firebase/auth"
 import "firebase/database"
-import { userFromFireBase } from "./model/User"
 import { userDataStore } from "./stores/userDataStore"
 
 var firebaseConfig = {
@@ -47,12 +45,12 @@ export async function logout() {
         .auth()
         .signOut()
         .then(() => {
-            console.log(authUserStore)
+            console.log("logged out")
 
             // we let the auth route handle this nav now so if they are in a non auth route the dont have to be moved
             // navigate("/", { replace: true });
             //change the store after nav to avoid template errors needing to read email
-            authUserStore.update(() => null) //this will cause a redirect
+            userDataStore.update(() => null) //this will cause a redirect
         })
         .catch((e) => {
             alert(e.message)
@@ -103,7 +101,7 @@ export async function updatePersonalData(data) {
                 displayName: displayName,
             })
 
-        authUserStore.update((user) => {
+        userDataStore.update((user) => {
             return { ...user, displayName: displayName }
         })
     } catch (e) {
@@ -113,6 +111,7 @@ export async function updatePersonalData(data) {
 
 /**
  * Signs in to firebase using basic authentication
+ * Then loads the custom data
  * @param email
  * @param password
  * @returns {Promise<void>}
@@ -121,7 +120,7 @@ export async function signin(email, password) {
     try {
         let { user } = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
         if (user.emailVerified) {
-            authUserStore.update(() => userFromFireBase(user))
+            await getUserDataAndStore()
             navigate("/", { replace: true })
         } else {
             alert("User not found, if you registered before, have you checked your email?")
@@ -185,8 +184,7 @@ export async function backendInit() {
     try {
         let user = await getCurrentUser()
         if (user && user.emailVerified) {
-            const userData = await getUserData()
-            userDataStore.update(() => userData)
+            await getUserDataAndStore()
         }
     } catch (e) {
         throw e.message
@@ -194,10 +192,10 @@ export async function backendInit() {
 }
 
 /**
- * Loads user data for authenticated user
+ * Loads user data for authenticated user and persists in the svelte store
  * @returns {Promise<any|{}|Object>}
  */
-export async function getUserData() {
+export async function getUserDataAndStore() {
     try {
         let query = await firebase
             .database()
@@ -205,6 +203,8 @@ export async function getUserData() {
             .once("value")
 
         const user = query.val()
+        userDataStore.update(() => user)
+
         console.log(`user data loaded: ${user}`)
         return user
     } catch (e) {
@@ -212,6 +212,7 @@ export async function getUserData() {
     }
 }
 
+//todo
 export async function amIFollowing(uid) {
     try {
         return await firebase.database().ref("users/" + uid)

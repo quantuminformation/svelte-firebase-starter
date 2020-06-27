@@ -1,7 +1,6 @@
-let base = "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
-
-//use this (or whatever you set up the emulator to be) when running firebase funcitons emulation
-// base = "http://localhost:5002/svelte-fullstack-starter/us-central1"
+let base = process.env.EMULATION
+    ? "http://localhost:5002/svelte-fullstack-starter/us-central1"
+    : "https://us-central1-svelte-fullstack-starter.cloudfunctions.net"
 
 function send({ method, path, data, token }) {
     const opts = { method, headers: {} }
