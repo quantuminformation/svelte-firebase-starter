@@ -1,8 +1,8 @@
 <script>
     import DefaultSpinner from "./DefaultSpinner.svelte"
+    import { post } from "../api"
 
-    import { getUserDataAndStore, updateUserUsername, isUsernameFree } from "../firebaseBackend"
-    import { siteBaseURL } from "../../sharedCode/constants"
+    import { getUserDataAndStore, isUsernameFree } from "../firebaseBackend"
 
     let personalDataClone // for comparing changes
     let personalData
@@ -24,7 +24,7 @@
 
     function submitUsername(event) {
         pendingApiCall = true
-        updateUserUsername(personalDataClone.username)
+        let promise = post("updateUsername", { username: personalDataClone.username })
             .then(() => {
                 showSuccessMessage = true
                 pendingApiCall = false
@@ -80,7 +80,7 @@
         {#if personalDataClone.username}
             <p>Your profile url will be at {`${siteBaseURL}${personalDataClone.username}`}</p>
         {/if}
-        <button disabled={!usernameIsFree}>Update Username</button>
+        <button disabled="{!usernameIsFree}">Update Username</button>
         {#if pendingApiCall}
             <DefaultSpinner />
         {/if}

@@ -1,7 +1,7 @@
 <script>
     import { link } from "svelte-routing"
 
-    //since this is in the authenticated HOC $authUserStore is guaranteed to be there
+    //since this is in the authenticated HOC $userDataStore is guaranteed to be there
 
     export let user
 </script>

@@ -1,10 +1,10 @@
 <script>
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate, link } from "svelte-routing"
-    import { signin,authUserStore} from "../firebaseBackend"
+    import { signin } from "../firebaseBackend"
+    import { userDataStore } from "../stores/userDataStore"
 
-
-    if ($authUserStore) {
+    if ($userDataStore) {
         navigate("/", { replace: true })
     }
 
@@ -14,7 +14,7 @@
 
     export function submit(event) {
         pendingApiCall = true
-        signin(email, password).catch(e => {
+        signin(email, password).catch((e) => {
             pendingApiCall = false
         })
     }
@@ -24,20 +24,20 @@
 
     <div>
         <h1>Login Details</h1>
-        <form on:submit|preventDefault={submit} id="main-form">
+        <form on:submit|preventDefault="{submit}" id="main-form">
 
             <input
                 id="inline-full-name"
                 type="email"
                 required
                 placeholder="Email"
-                bind:value={email} />
+                bind:value="{email}" />
             <input
                 id="inline-username"
                 type="password"
                 required
                 placeholder="Your password"
-                bind:value={password} />
+                bind:value="{password}" />
 
             <button>Signin</button>
             {#if pendingApiCall}

@@ -1,9 +1,10 @@
 <script>
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { authUserStore,requestPasswordRecovery } from "../firebaseBackend"
+    import { requestPasswordRecovery } from "../firebaseBackend"
+    import { userDataStore } from "../stores/userDataStore"
 
-    if ($authUserStore) {
+    if ($userDataStore) {
         navigate("/", { replace: true })
     }
 
@@ -14,11 +15,11 @@
     export function submit(event) {
         pendingApiCall = true
         requestPasswordRecovery(email)
-            .then(newUser => {
+            .then((newUser) => {
                 showSuccessMessage = true
                 pendingApiCall = false
             })
-            .catch(e => {
+            .catch((e) => {
                 pendingApiCall = false
                 console.log(e)
                 alert(e.message)
@@ -28,8 +29,13 @@
 
 <div>
     <h1>Request Account Recovery</h1>
-    <form on:submit|preventDefault={submit}>
-        <input id="inline-full-name" type="email" required placeholder="Email" bind:value={email} />
+    <form on:submit|preventDefault="{submit}">
+        <input
+            id="inline-full-name"
+            type="email"
+            required
+            placeholder="Email"
+            bind:value="{email}" />
 
         <button>Recover Account</button>
         {#if pendingApiCall}

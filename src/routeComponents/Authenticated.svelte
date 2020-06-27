@@ -1,13 +1,13 @@
 <script>
     import { navigate } from "svelte-routing"
 
-    import { authUserStore } from "../firebaseBackend"
+    import { userDataStore } from "../stores/userDataStore"
 
-    $: if (!$authUserStore) {
+    $: if (!$userDataStore) {
         navigate("/", { replace: true })
     }
 </script>
 
-{#if $authUserStore}
+{#if $userDataStore}
     <slot />
 {/if}
