@@ -15,7 +15,9 @@ import { post } from "./api"
 var firebaseConfig = {
     apiKey: "AIzaSyDgkLmjsLTLO8cnEhaZu-0o12wpdisCn5w",
     authDomain: "svelte-fullstack-starter.firebaseapp.com",
-    databaseURL: "https://svelte-fullstack-starter.firebaseio.com",
+    databaseURL: process.env.EMULATION
+        ? "http://localhost:9000/?ns=svelte-fullstack-starter"
+        : "https://svelte-fullstack-starter.firebaseio.com",
     projectId: "svelte-fullstack-starter",
     storageBucket: "svelte-fullstack-starter.appspot.com",
     messagingSenderId: "684795141693",
@@ -23,7 +25,6 @@ var firebaseConfig = {
     measurementId: "G-Y1SRV3FGND",
 }
 // Initialize Firebase
-//firebase.initializeApp(firebaseConfig);
 firebase.initializeApp(firebaseConfig)
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
@@ -155,11 +156,19 @@ export async function signin(email, password) {
     }
 }
 
+/**
+ * Runs a query to see if any child of users contains the username
+ * @param username
+ * @returns {Promise<string>}
+ */
 export async function isUsernameFree(username) {
     try {
-        let query = await firebase.database().ref(`users/${username}`).once("value")
+        console.log(process.env.NODE_ENV)
+        let ref = await firebase.database().ref(`users`)
 
-        return query.val()
+        let value = await ref.orderByChild("username").equalTo(username).once("value")
+
+        return value.val()
     } catch (e) {
         throw e.message
     }

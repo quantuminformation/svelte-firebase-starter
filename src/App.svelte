@@ -10,6 +10,7 @@
     import { authUserStore, logout } from "./firebaseBackend"
 
     console.log(`auth users on load ` + $authUserStore)
+    process.env.EMULATION && console.log("Firebase Emulation being used")
 </script>
 
 <style>
