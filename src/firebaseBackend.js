@@ -7,10 +7,7 @@ let firebase = firebaseOriginal.default
 import "firebase/auth"
 import "firebase/database"
 import { userFromFireBase } from "./model/User"
-import { post } from "./api"
-//import "firebase/analytics";
-
-//import firebase from "firebase";
+import { userDataStore } from "./stores/userDataStore"
 
 var firebaseConfig = {
     apiKey: "AIzaSyDgkLmjsLTLO8cnEhaZu-0o12wpdisCn5w",
@@ -43,8 +40,6 @@ function getCurrentUser() {
         }, reject)
     })
 }
-
-export let authUserStore = writable(null)
 
 export async function logout() {
     // let user = await getCurrentUser()
@@ -90,23 +85,6 @@ export async function updateUserPassword(password) {
     } catch (e) {
         alert(e.message)
         throw new Error()
-    }
-}
-
-export async function updateUserUsername(username) {
-    try {
-        await firebase
-            .database()
-            .ref("users/" + firebase.auth().currentUser.uid)
-            .update({
-                username: username,
-            })
-
-        authUserStore.update((user) => {
-            return { ...user, username: username }
-        })
-    } catch (e) {
-        alert(e.message)
     }
 }
 
@@ -200,21 +178,26 @@ export function requestPasswordRecovery(email) {
 }
 
 /**
- * Get a user stored locally and then get the required data added to the store
- * We check emailVerified as they also exist on the local storage even if they haven't verified and we don't want to show logged UI
+ * Get a user stored locally if logged in and verified then load custom data
  * @returns {Promise<void>}
  */
 export async function backendInit() {
     try {
         let user = await getCurrentUser()
         if (user && user.emailVerified) {
-            authUserStore.update(() => userFromFireBase(user))
+            const userData = await getUserData()
+            userDataStore.update(() => userData)
         }
     } catch (e) {
         throw e.message
     }
 }
-export async function getUserProfile() {
+
+/**
+ * Loads user data for authenticated user
+ * @returns {Promise<any|{}|Object>}
+ */
+export async function getUserData() {
     try {
         let query = await firebase
             .database()
@@ -222,7 +205,7 @@ export async function getUserProfile() {
             .once("value")
 
         const user = query.val()
-        console.log(user)
+        console.log(`user data loaded: ${user}`)
         return user
     } catch (e) {
         throw e.message
