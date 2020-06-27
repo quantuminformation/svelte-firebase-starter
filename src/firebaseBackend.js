@@ -177,6 +177,28 @@ export function requestPasswordRecovery(email) {
 }
 
 /**
+ * updates username, note there are very specific rules in database.rules.json to stop people having same username
+ * @param username
+ * @returns {Promise<void>}
+ */
+export async function updateUserUsername(username) {
+    try {
+        await firebase
+            .database()
+            .ref("users/" + firebase.auth().currentUser.uid)
+            .update({
+                username: username,
+            })
+
+        userDataStore.update((user) => {
+            return { ...user, username: username }
+        })
+    } catch (e) {
+        alert(e.message)
+    }
+}
+
+/**
  * Get a user stored locally if logged in and verified then load custom data
  * @returns {Promise<void>}
  */

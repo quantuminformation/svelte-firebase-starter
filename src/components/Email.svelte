@@ -1,6 +1,9 @@
 <script>
     import { updateUserEmail } from "../firebaseBackend"
+    import * as firebaseOriginal from "firebase/app"
 
+    let firebase = firebaseOriginal.default
+    import "firebase/auth"
     let emailClone = firebase.auth().currentUser.email
     let showSuccessMessage = false
     let pendingApiCall = false

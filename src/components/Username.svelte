@@ -1,8 +1,8 @@
 <script>
     import DefaultSpinner from "./DefaultSpinner.svelte"
-    import { post } from "../api"
 
-    import { getUserDataAndStore, isUsernameFree } from "../firebaseBackend"
+    import { getUserDataAndStore, updateUserUsername, isUsernameFree } from "../firebaseBackend"
+    import { siteBaseURL } from "../../sharedCode/constants"
 
     let personalDataClone // for comparing changes
     let personalData
@@ -24,7 +24,7 @@
 
     function submitUsername(event) {
         pendingApiCall = true
-        let promise = post("updateUsername", { username: personalDataClone.username })
+        updateUserUsername(personalDataClone.username)
             .then(() => {
                 showSuccessMessage = true
                 pendingApiCall = false
