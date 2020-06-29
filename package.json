@@ -5,6 +5,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "deploy": "npm run build && firebase deploy",
+    "deploy:staging": "npm run build && firebase deploy staging",
     "start": "sirv public --single -p 5001",
     "lint": "eslint src "
   },
