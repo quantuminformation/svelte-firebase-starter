@@ -5,7 +5,10 @@ import livereload from "rollup-plugin-livereload"
 import { terser } from "rollup-plugin-terser"
 import replace from "@rollup/plugin-replace"
 
-
+import { config } from "dotenv"
+let isDev = process.env.dev
+console.log("isDev")
+console.log(isDev)
 const production = !process.env.ROLLUP_WATCH
 
 export default {
@@ -18,10 +21,14 @@ export default {
     },
     plugins: [
         replace({
-            "process.env.NODE_ENV": process.env.NODE_ENV,
-            "process.env.EMULATION": JSON.stringify(process.env.EMULATION),
+            // stringify the object
+            process: JSON.stringify({
+                env: {
+                    dev: !production,
+                    ...config().parsed, // attached the .env config
+                },
+            }),
         }),
-
         svelte({
             // enable run-time checks when not in production
             dev: !production,
