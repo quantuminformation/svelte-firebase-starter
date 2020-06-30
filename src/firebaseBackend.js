@@ -6,6 +6,7 @@ let firebase = firebaseOriginal.default
 import "firebase/auth"
 import "firebase/database"
 import { userDataStore } from "./stores/userDataStore"
+import { log } from "./util/logging"
 
 var firebaseConfig = {
     apiKey: "AIzaSyDgkLmjsLTLO8cnEhaZu-0o12wpdisCn5w",
@@ -26,7 +27,12 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 // firebase specific
 let userLoaded = false
 
+/**
+ * checks local data if a user is logged in
+ * @returns {Promise<user>}
+ */
 function getCurrentUser() {
+    log("Attempting to get the current user locally")
     return new Promise((resolve, reject) => {
         if (userLoaded) {
             resolve(firebase.auth().currentUser)
@@ -34,6 +40,9 @@ function getCurrentUser() {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
             userLoaded = true
             unsubscribe()
+            log("Current user found successfully")
+            log(user)
+
             resolve(user)
         }, reject)
     })

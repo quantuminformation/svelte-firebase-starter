@@ -25,6 +25,8 @@ export default {
             process: JSON.stringify({
                 env: {
                     dev: !production,
+                    EMULATION: process.env.EMULATION,
+                    PRODUCTION: production,
                     ...config().parsed, // attached the .env config
                 },
             }),
