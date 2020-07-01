@@ -129,8 +129,7 @@ export async function signin(email, password) {
     try {
         log(`Attempting to sign in`)
 
-
-        let { user } = await firebase.auth().signInWithEmailAndPassword(    email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
+        let { user } = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
 
         log("User from signInWithEmailAndPassword:")
         log(user)
@@ -242,9 +241,21 @@ export async function getUserDataAndStore() {
         const user = query.val()
         log("User DB query returned:")
         log(user)
+        if (!user) {
+            log(
+                "realtime DB data for user not found, so only storing uid from login info. This can happen if you switch environment or are using emulation"
+            )
+            userDataStore.update(() => {
+                return {
+                    uid: uid,
+                }
+            })
 
-        userDataStore.update(() => user)
-        return user
+            return null
+        } else {
+            userDataStore.update(() => user)
+            return user
+        }
     } catch (e) {
         throw e.message
     }

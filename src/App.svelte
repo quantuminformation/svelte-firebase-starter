@@ -9,8 +9,6 @@
     import Profile from "./routeComponents/Profile.svelte"
     import { logout } from "./firebaseBackend"
     import { userDataStore } from "./stores/userDataStore"
-
-
 </script>
 
 <style>
@@ -41,7 +39,11 @@
     {@debug $userDataStore}
 -->
     {#if $userDataStore}
-        <p>Logged in as {$userDataStore.displayName || $userDataStore.email}</p>
+        {#if !$userDataStore.displayName && !$userDataStore.email}
+            <p>Please complete your profile in Settings</p>
+        {:else}
+            <p>Logged in as {$userDataStore.displayName || $userDataStore.email}</p>
+        {/if}
     {:else}
         <p>Not logged in</p>
     {/if}
