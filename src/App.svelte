@@ -53,7 +53,7 @@
             <a href="/register" use:link>Register</a>
             <a href="/signin" use:link>Signin</a>
         {:else}
-            <a href="${`/$userDataStore.username`}" use:link>Profile</a>
+            <a href="{$userDataStore.username}" use:link>Profile</a>
 
             <a href="/settings" use:link>Settings</a>
             <button on:click="{logout}">Logout</button>
