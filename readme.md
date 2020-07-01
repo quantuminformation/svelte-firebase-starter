@@ -59,3 +59,5 @@ You can run the newly built app with `npm run start`. This uses [sirv](https://g
 Assuming you have firebase emulation for Realtime DB and Cloud functions you can pass this env variable in to run `EMULATION="true" npm run dev`
 
 And your production data will not be touched
+
+You can also get chrome to open up with no security as there are some cars issues with local emulation or functions with `npm run chrome`. You can then test the local app with the new Chrome window
