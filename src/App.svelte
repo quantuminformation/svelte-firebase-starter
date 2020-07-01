@@ -11,9 +11,6 @@
     import { userDataStore } from "./stores/userDataStore"
 
 
-
-    console.log(`auth users on load ` + $userDataStore)
-    process.env.EMULATION && console.log("Firebase Emulation being used")
 </script>
 
 <style>

@@ -127,7 +127,14 @@ export async function updatePersonalData(data) {
  */
 export async function signin(email, password) {
     try {
-        let { user } = await firebase.auth().signInWithEmailAndPassword(email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
+        log(`Attempting to sign in`)
+
+
+        let { user } = await firebase.auth().signInWithEmailAndPassword(    email, password) // sometimes the user is wrapped in user, vs get currentUser which isn't wrapped
+
+        log("User from signInWithEmailAndPassword:")
+        log(user)
+
         if (user.emailVerified) {
             await getUserDataAndStore()
             navigate("/", { replace: true })
@@ -149,7 +156,6 @@ export async function signin(email, password) {
  */
 export async function isUsernameFree(username) {
     try {
-        console.log(process.env.NODE_ENV)
         let ref = await firebase.database().ref(`users`)
 
         let value = await ref.orderByChild("username").equalTo(username).once("value")
@@ -228,15 +234,16 @@ export async function backendInit() {
  */
 export async function getUserDataAndStore() {
     try {
-        let query = await firebase
-            .database()
-            .ref("users/" + firebase.auth().currentUser.uid)
-            .once("value")
+        const uid = firebase.auth().currentUser.uid
+        log(`Attempting to get the user data stored on Realtime Database for user ${uid}`)
+
+        let query = await firebase.database().ref(`users/${uid}`).once("value")
 
         const user = query.val()
-        userDataStore.update(() => user)
+        log("User DB query returned:")
+        log(user)
 
-        console.log(`user data loaded: ${user}`)
+        userDataStore.update(() => user)
         return user
     } catch (e) {
         throw e.message
