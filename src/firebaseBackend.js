@@ -288,6 +288,25 @@ export async function getUserDataAndStore() {
         throw e.message
     }
 }
+//WIP
+
+/**
+ * updates username, note there are very specific rules in database.rules.json to stop people having same username
+ * @param username
+ * @returns {Promise<void>}
+ */
+export async function followUser(user) {
+    try {
+        const uid = firebase.auth().currentUser.uid
+        log(`${uid} to follow user ${user.username}`)
+        await firebase.database().ref(`following/${uid}/userFollowing`).update({
+            uid: user.uid,
+        })
+        return true
+    } catch (e) {
+        alert(e.message)
+    }
+}
 
 //todo
 export async function amIFollowing(uid) {

@@ -1,13 +1,13 @@
 <script>
     import User from "../components/UserMini.svelte"
-    import { getDBUserByUsername } from "../firebaseBackend"
+    import { getDBUserByUsername, followUser } from "../firebaseBackend"
     import { log } from "../util/logging"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { userDataStore } from "../stores/userDataStore"
 
     let isOwnProfile = false
     export let user
-    export let isFollowing
+    export let isFollowing = false
     export let username // comes from the route
     let promise
 
@@ -25,7 +25,18 @@
         }
     }
 
-    const follow = (uid) => {}
+    const follow = async (event) => {
+        let result = await followUser(user)
+        if (result) {
+            isFollowing = true
+        }
+    }
+    const unFollow = async (event) => {
+        let result = await followUser(user)
+        if (result) {
+            isFollowing = true
+        }
+    }
 </script>
 
 <h1>User Profile</h1>
@@ -36,13 +47,11 @@
     <h1>{user.username || 'User has not set a display name'}</h1>
 
     {#if !isOwnProfile}
-        <input type="checkbox" />
-        <button on:click="{follow(user.uid)}">UnFollow</button>
 
         {#if isFollowing}
-            <button on:click="{follow(user.uid)}">UnFollow</button>
+            <button on:click="{unFollow}">UnFollow</button>
         {:else}
-            <button>UnFollow</button>
+            <button on:click="{follow}">Follow</button>
         {/if}
     {/if}
 {:catch error}
