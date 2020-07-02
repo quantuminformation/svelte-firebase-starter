@@ -6,9 +6,6 @@ import { terser } from "rollup-plugin-terser"
 import replace from "@rollup/plugin-replace"
 
 import { config } from "dotenv"
-let isDev = process.env.dev
-console.log("isDev")
-console.log(isDev)
 const production = !process.env.ROLLUP_WATCH
 
 export default {

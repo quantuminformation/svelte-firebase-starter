@@ -6,7 +6,6 @@
     import Authenticated from "./Authenticated.svelte"
     import PersonalData from "../components/PersonalData.svelte"
     import Username from "../components/Username.svelte"
-    import { userDataStore } from "../stores/userDataStore"
     import Email from "../components/Email.svelte"
 
     let userSettings

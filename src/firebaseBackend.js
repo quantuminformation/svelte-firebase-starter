@@ -155,11 +155,39 @@ export async function signin(email, password) {
  */
 export async function isUsernameFree(username) {
     try {
-        let ref = await firebase.database().ref(`users`)
+        let user = await getDBUserByUsername(username)
 
-        let value = await ref.orderByChild("username").equalTo(username).once("value")
+        return !!user
+    } catch (e) {
+        throw e.message
+    }
+}
 
-        return value.val()
+/**
+ * @param username
+ * @returns {Promise<user>}
+ */
+export async function getDBUserByUsername(username) {
+    try {
+        let dbUser = await firebase
+            .database()
+            .ref(`users`)
+            .orderByChild("username")
+            .equalTo(username)
+            .once("value")
+
+        //todo clean this
+
+        let dbUserVal = dbUser.val()
+        if (!dbUserVal) {
+            return null
+        }
+
+        let key = [Object.keys(dbUserVal)[0]][0]
+        const user = dbUserVal[key]
+        log("DBuser found: ")
+        log(user)
+        return user
     } catch (e) {
         throw e.message
     }

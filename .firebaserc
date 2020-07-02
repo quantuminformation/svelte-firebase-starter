@@ -1,6 +1,6 @@
 {
-  "projects": {
-    "default": "svelte-fullstack-starter",
-    "staging": "svelte-firebase-staging"
-  }
-}
+   "projects": {
+     "default": "svelte-fullstack-starter",
+     "staging": "svelte-firebase-staging"
+   }
+ }
