@@ -18,11 +18,9 @@
         log(`Profile page for logged in user ${username}, skipping data retrieval`)
     } else {
         log(`loading profile data for username ${username}`)
-        promise = async () => {
-            await getDBUserByUsername(username).then((res) => {
-                user = res
-            })
-        }
+        promise = getDBUserByUsername(username).then((res) => {
+            user = res
+        })
     }
 
     const follow = async (event) => {
@@ -43,11 +41,11 @@
 
 {#await promise}
     <DefaultSpinner />
-{:then user}
+    <!--todo can we get rid of result here as its no used?-->
+{:then result}
     <h1>{user.username || 'User has not set a display name'}</h1>
 
     {#if !isOwnProfile}
-
         {#if isFollowing}
             <button on:click="{unFollow}">UnFollow</button>
         {:else}
