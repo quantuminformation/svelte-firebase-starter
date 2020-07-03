@@ -187,7 +187,7 @@ export async function getDBUserByUsername(username) {
         const user = dbUserVal[key]
         log("DBuser found: ")
         log(user)
-        return user
+        return { ...user, uid: key }
     } catch (e) {
         throw e.message
     }
