@@ -13,6 +13,7 @@
     // check if user is current user, if so just resolve the promise with the local data, or get it from the db
     if ($userDataStore.username === username) {
         isOwnProfile = true
+        user = $userDataStore
         promise = Promise.resolve($userDataStore)
         log(`Profile page for logged in user ${username}, skipping data retrieval`)
     } else {
@@ -46,6 +47,9 @@
     <!--todo can we get rid of result here as its no used?-->
 {:then result}
     <h1>{user.username || 'User has not set a display name'}</h1>
+    {#if isOwnProfile}
+        <span>It's you!</span>
+    {/if}
 
     {#if !isOwnProfile}
         {#if isFollowing}
@@ -55,5 +59,5 @@
         {/if}
     {/if}
 {:catch error}
-    <p style="color: red">error:  {error}</p>
+    <p style="color: red">error: {error}</p>
 {/await}
