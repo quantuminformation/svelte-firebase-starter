@@ -12,10 +12,22 @@
 
             ".indexOn": "username",
             "$uid": {
-                ".write": "auth.uid === $uid"
-            },
-            "username": {
-                ".validate": "newData.val() === data.val()"
+                ".write": "auth.uid === $uid",
+                "username": {
+                    ".validate": "root.child('username_lookup/'+newData.val()).val() === auth.uid"
+                }
+            }
+        },
+
+        "username_lookup": {
+            "$username": {
+                // not readable, cannot get a list of usernames!
+                // can only write if this username is not already in the db
+                ".write": "!data.exists()",
+                ".read": true,
+
+                // can only write my own uid into this index
+                ".validate": "newData.val() === auth.uid"
             }
         }
     }

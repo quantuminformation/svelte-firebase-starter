@@ -151,13 +151,13 @@ export async function signin(email, password) {
 /**
  * Runs a query to see if any child of users contains the username
  * @param username
- * @returns {Promise<string>}
+ * @returns {Promise<boolean>}
  */
 export async function isUsernameFree(username) {
     try {
-        let user = await getDBUserByUsername(username)
-
-        return !!user
+        let ref = await firebase.database().ref(`username_lookup/${username}`).once("value")
+        let uid = ref.val()
+        return !!uid
     } catch (e) {
         throw e.message
     }
@@ -219,24 +219,35 @@ export function requestPasswordRecovery(email) {
 }
 
 /**
- * updates username, note there are very specific rules in database.rules.json to stop people having same username
+ * updates Users username
+ * Updates index of usernames to prevent duplicates later
  * @param username
  * @returns {Promise<void>}
+ * todo find a way to batch both these writes as a transaction
  */
-export async function updateUserUsername(username) {
+export async function claimUsername(username) {
     try {
-        await firebase
-            .database()
-            .ref("users/" + firebase.auth().currentUser.uid)
-            .update({
-                username: username,
-            })
+        const myUid = firebase.auth().currentUser.uid
+
+        // the order of the updates are important due to the database validation rules, as the username_lookup must be set before the `users/${myUid}`
+        // see database.rules.json
+        // ".validate": "root.child('username_lookup/'+newData.val()).val() === auth.uid"
+
+        // step 1
+        log(`Storing username ${username} in lookup table`)
+        await firebase.database().ref(`username_lookup/${username}`).set(myUid)
+
+        // step 2
+        log(`updating username ${username} in users`)
+        await firebase.database().ref(`users/${myUid}`).update({
+            username: username,
+        })
 
         userDataStore.update((user) => {
             return { ...user, username: username }
         })
-    } catch (e) {
-        alert(e.message)
+    } catch (error) {
+        alert(error.message)
     }
 }
 

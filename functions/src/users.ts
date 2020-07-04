@@ -73,3 +73,6 @@ const getStrippedUserRecords = async function (amount: number) {
     // original response should be now marked for disposal from memory
 }
 const extractSnapshotValue = (snapshot: admin.database.DataSnapshot) => snapshot.val()
+
+//todo function to clear out unused usernames
+// https://stackoverflow.com/questions/25294478/how-do-you-prevent-duplicate-user-properties-in-firebase#comment48336277_25328654
