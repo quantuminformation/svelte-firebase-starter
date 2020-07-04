@@ -34,7 +34,7 @@
 </style>
 
 <Router>
-    <h1>Svetle Firebase Starter</h1>
+    <h1>Svelte Firebase Starter</h1>
     <!--
     {@debug $userDataStore}
 -->
