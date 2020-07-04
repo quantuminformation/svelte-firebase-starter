@@ -1,9 +1,17 @@
 {
     "rules": {
-        "users": {
-            ".indexOn": "username",
+        "following": {
             "$uid": {
                 ".read": "auth != null",
+                ".write": "auth.uid === $uid"
+            }
+        },
+
+        "users": {
+            ".read": true,
+
+            ".indexOn": "username",
+            "$uid": {
                 ".write": "auth.uid === $uid"
             },
             "username": {
