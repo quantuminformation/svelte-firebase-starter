@@ -298,7 +298,7 @@ export async function getUserDataAndStore() {
 export async function followUser(user) {
     try {
         const myUid = firebase.auth().currentUser.uid
-            log(`${myUid} to follow user ${user.username}`)
+        log(`${myUid} to follow user ${user.username}`)
         await firebase
             .database()
             .ref(`following/${myUid}/userFollowing`)
@@ -335,12 +335,13 @@ export async function amIFollowing(uid) {
     try {
         const myUid = firebase.auth().currentUser.uid
         log(`is ${myUid} following user ${uid}`)
-        const result = await firebase
+        const ref = await firebase
             .database()
             .ref(`following/${myUid}/userFollowing/${uid}`)
             .once("value")
-            .val()
 
+        const result = ref.val()
+        log(`Following result: ${result}`)
         return result
     } catch (e) {
         throw e.message

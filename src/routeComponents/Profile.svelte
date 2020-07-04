@@ -55,5 +55,5 @@
         {/if}
     {/if}
 {:catch error}
-    <p style="color: red">soem rerrro {error.message}</p>
+    <p style="color: red">error:  {error}</p>
 {/await}
