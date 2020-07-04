@@ -291,27 +291,57 @@ export async function getUserDataAndStore() {
 //WIP
 
 /**
- * updates username, note there are very specific rules in database.rules.json to stop people having same username
+ * Follows a user
  * @param username
  * @returns {Promise<void>}
  */
 export async function followUser(user) {
     try {
-        const uid = firebase.auth().currentUser.uid
-        log(`${uid} to follow user ${user.username}`)
-        await firebase.database().ref(`following/${uid}/userFollowing`).update({
-            uid: user.uid,
-        })
+        const myUid = firebase.auth().currentUser.uid
+            log(`${myUid} to follow user ${user.username}`)
+        await firebase
+            .database()
+            .ref(`following/${myUid}/userFollowing`)
+            .update({
+                [user.uid]: true,
+            })
+        return true
+    } catch (e) {
+        alert(e.message)
+    }
+}
+/**
+ * UnFollows a user
+ * @param username
+ * @returns {Promise<void>}
+ */
+export async function unFollowUser(user) {
+    try {
+        const myUid = firebase.auth().currentUser.uid
+        log(`${myUid} to unfollow user ${user.username}`)
+        await firebase.database().ref(`following/${myUid}/userFollowing/${user.uid}`).remove()
         return true
     } catch (e) {
         alert(e.message)
     }
 }
 
-//todo
+/**
+ * Checks userFollowing for the current user to see if following profile user
+ * @param uid profile user to check
+ * @returns {Promise<any>}
+ */
 export async function amIFollowing(uid) {
     try {
-        return await firebase.database().ref("users/" + uid)
+        const myUid = firebase.auth().currentUser.uid
+        log(`is ${myUid} following user ${uid}`)
+        const result = await firebase
+            .database()
+            .ref(`following/${myUid}/userFollowing/${uid}`)
+            .once("value")
+            .val()
+
+        return result
     } catch (e) {
         throw e.message
     }

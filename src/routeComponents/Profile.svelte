@@ -1,6 +1,5 @@
 <script>
-    import User from "../components/UserMini.svelte"
-    import { getDBUserByUsername, followUser } from "../firebaseBackend"
+    import { getDBUserByUsername, followUser, amIFollowing, unFollowUser } from "../firebaseBackend"
     import { log } from "../util/logging"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { userDataStore } from "../stores/userDataStore"
@@ -18,11 +17,14 @@
         log(`Profile page for logged in user ${username}, skipping data retrieval`)
     } else {
         log(`loading profile data for username ${username}`)
-        promise = getDBUserByUsername(username).then((res) => {
-            user = res
-        })
+        async function promiseWrap() {
+            user = await getDBUserByUsername(username)
+            isFollowing = await amIFollowing(user.uid)
+            //todo what to return here?
+            return true
+        }
+        promise = promiseWrap()
     }
-
     const follow = async (event) => {
         let result = await followUser(user)
         if (result) {
@@ -30,9 +32,9 @@
         }
     }
     const unFollow = async (event) => {
-        let result = await followUser(user)
+        let result = await unFollowUser(user)
         if (result) {
-            isFollowing = true
+            isFollowing = false
         }
     }
 </script>
@@ -53,5 +55,5 @@
         {/if}
     {/if}
 {:catch error}
-    <p style="color: red">{error.message}</p>
+    <p style="color: red">soem rerrro {error.message}</p>
 {/await}
