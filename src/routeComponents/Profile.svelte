@@ -11,7 +11,7 @@
     let promise
 
     // check if user is current user, if so just resolve the promise with the local data, or get it from the db
-    if ($userDataStore.username === username) {
+    if ($userDataStore && $userDataStore.username === username) {
         isOwnProfile = true
         user = $userDataStore
         promise = Promise.resolve($userDataStore)
@@ -20,7 +20,9 @@
         log(`loading profile data for username ${username}`)
         async function promiseWrap() {
             user = await getDBUserByUsername(username)
-            isFollowing = await amIFollowing(user.uid)
+            if ($userDataStore) {
+                isFollowing = await amIFollowing(user.uid)
+            }
             //todo what to return here?
             return true
         }
@@ -51,7 +53,7 @@
         <span>It's you!</span>
     {/if}
 
-    {#if !isOwnProfile}
+    {#if $userDataStore && !isOwnProfile}
         {#if isFollowing}
             <button on:click="{unFollow}">UnFollow</button>
         {:else}
