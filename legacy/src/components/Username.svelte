@@ -2,7 +2,7 @@
     import DefaultSpinner from "./DefaultSpinner.svelte"
 
     import { getUserDataAndStore, claimUsername, isUsernameFree } from "../firebaseBackend"
-    import { siteBaseURL } from "../../sharedCode/constants"
+    import { siteBaseURL } from "../../../sharedCode/constants"
 
     let personalDataClone // for comparing changes
     let personalData

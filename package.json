@@ -7,7 +7,7 @@
         "deploy": "firebase use default && npm run build && firebase deploy",
         "deploy:staging": "firebase use staging && npm run build && firebase deploy",
         "start": "sirv public --single -p 5001",
-        "lint": "eslint src ",
+        "lint": "eslint legacy/src ",
         "chrome": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --user-data-dir=\"/tmp/chrome_dev_session\" --disable-web-security"
     },
     "devDependencies": {
