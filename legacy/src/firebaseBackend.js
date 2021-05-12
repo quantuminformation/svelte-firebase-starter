@@ -10,12 +10,12 @@ import { log } from "./util/logging"
 
 var firebaseConfig = {
     apiKey: "AIzaSyDgkLmjsLTLO8cnEhaZu-0o12wpdisCn5w",
-    authDomain: "svelte-fullstack-starter.firebaseapp.com",
+    authDomain: "client.firebaseapp.com",
     databaseURL: process.env.EMULATION
         ? "http://localhost:9000/?ns=svelte-fullstack-starter"
         : "https://svelte-fullstack-starter.firebaseio.com",
-    projectId: "svelte-fullstack-starter",
-    storageBucket: "svelte-fullstack-starter.appspot.com",
+    projectId: "client",
+    storageBucket: "client.appspot.com",
     messagingSenderId: "684795141693",
     appId: "1:684795141693:web:bb22a3283361cfc381d454",
     measurementId: "G-Y1SRV3FGND",
