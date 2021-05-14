@@ -5,13 +5,14 @@
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
+    ],
+    "runtime": "nodejs14"
   },
   "database": {
     "rules": "./database.rules.json"
   },
   "hosting": {
-    "public": "public",
+    "public": "client/build",
     "ignore": [
       "firebase.json",
       "**/.*",
