@@ -12,6 +12,17 @@ import { getSomeUsers } from "./users"
 
 admin.initializeApp()
 
+let sveltekitServer;
+exports.sveltekit = functions.https.onRequest(async (request, response) => {
+    if (!sveltekitServer) {
+        functions.logger.info("Initializing SvelteKit SSR Handler");
+        sveltekitServer = require("./sveltekit/index").default;
+        functions.logger.info("SvelteKit SSR Handler initialised!");
+    }
+    functions.logger.info("Requested resource: " + request.originalUrl);
+    return await sveltekitServer(request, response);
+});
+
 app.post("/", async (req, res) => {
     const { username, uid } = req.body
     try {
