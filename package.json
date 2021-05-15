@@ -2,9 +2,7 @@
     "name": "svelte-app",
     "version": "1.0.0",
     "scripts": {
-        "build": "rollup -c",
-        "dev": "rollup -c -w",
-        "deploy": "firebase use default && npm run build && firebase deploy",
+        "deploy": "firebase use svelte-fullstack-starter && cd client && npm run build && cd ../ && firebase deploy",
         "deploy:staging": "firebase use staging && npm run build && firebase deploy",
         "start": "sirv public --single -p 5001",
         "lint": "eslint legacy/src "
