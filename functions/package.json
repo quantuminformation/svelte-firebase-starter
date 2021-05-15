@@ -9,7 +9,9 @@
         "start": "npm run shell",
         "deploy": "firebase deploy --only functions",
         "logs": "firebase functions:log",
-        "test": "mocha --reporter spec"
+        "test": "mocha --reporter spec",
+        "emulate": "firebase emulators:start --only database,functions  --inspect-functions   --import=./seed --export-on-exit  ",
+        "emulate:functions": "firebase emulators:start --only functions  --inspect-functions"
     },
     "engines": {
         "node": "10"

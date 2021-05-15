@@ -6,7 +6,7 @@
     "preview": "svelte-kit preview",
     "lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --write --plugin-search-dir=. .",
-    "build": "npx  rimraf client/public && svelte-kit build --verbose"
+    "build": "npx rimraf client/build && svelte-kit build --verbose"
   },
   "devDependencies": {
     "@sveltejs/kit": "next",
