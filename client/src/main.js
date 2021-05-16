@@ -1,4 +1,6 @@
-import App from "./App.svelte"
+//todo figure out what logic to keep for ssr
+
+import App from "../../legacy/src/App.svelte"
 import { backendInit } from "./firebaseBackend"
 
 function getapp() {

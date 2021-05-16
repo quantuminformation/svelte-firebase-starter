@@ -2,7 +2,7 @@
     import { register } from "../firebaseBackend"
     import DefaultSpinner from "../components/DefaultSpinner.svelte"
     import { navigate } from "svelte-routing"
-    import { userDataStore } from "../stores/userDataStore"
+    import { userDataStore } from "../../../legacy/src/stores/userDataStore"
 
     if ($userDataStore) {
         navigate("/", { replace: true })

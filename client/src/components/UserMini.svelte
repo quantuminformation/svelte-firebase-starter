@@ -8,7 +8,7 @@
 
 <div style="border: 1px solid black;padding: 1em;margin-bottom: 1em">
     User:
-    <a use:link href={user.username}>
+    <a  href={user.username}>
         <span>{user.displayName || user.username || user.uid}</span>
     </a>
 </div>

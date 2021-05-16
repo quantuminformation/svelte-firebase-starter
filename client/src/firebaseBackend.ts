@@ -2,7 +2,7 @@ import { navigate } from "svelte-routing"
 
 import * as firebaseOriginal from "firebase/app"
 
-let firebase = firebaseOriginal.default
+let firebase = firebaseOriginal
 import "firebase/auth"
 import "firebase/database"
 import { userDataStore } from "./stores/userDataStore"
@@ -31,7 +31,7 @@ let userLoaded = false
  * checks local data if a user is logged in
  * @returns {Promise<user>}
  */
-function getCurrentUser() {
+function getCurrentUser() :any {
     log("Attempting to get the current user locally")
     return new Promise((resolve, reject) => {
         if (userLoaded) {
